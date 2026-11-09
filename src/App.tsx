@@ -809,9 +809,20 @@ export function App() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500 print:hidden">
-        <div className="max-w-6xl mx-auto px-4">
-          <span>Készült az Oktatási Hivatal NAT 2020 munkafüzetei alapján.</span>
+      <footer className="bg-white border-t border-slate-200 py-4 text-xs text-slate-500 print:hidden">
+        <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+          <span className="text-left">
+            Készült az Oktatási Hivatal NAT 2020 munkafüzetei alapján.
+          </span>
+          <span className="text-right font-medium text-slate-600 self-end sm:self-auto">
+            Kapcsolat:{' '}
+            <a
+              href="mailto:szabobalint@outlook.com"
+              className="text-indigo-600 hover:text-indigo-800 hover:underline transition"
+            >
+              szabobalint@outlook.com
+            </a>
+          </span>
         </div>
       </footer>
     </div>
