@@ -1,11 +1,13 @@
 import { useMemo, useRef, useState } from 'react';
 import confetti from 'canvas-confetti';
 import {
-  ArrowUp,
   Award,
   BookOpen,
   Calculator,
+  Check,
   CheckCheck,
+  ChevronDown,
+  ChevronUp,
   Clock,
   Compass,
   Divide,
@@ -31,6 +33,8 @@ import {
 } from './types/curriculum';
 import { generateWorksheet } from './generators/mathGrade4';
 import { ExerciseCard } from './components/ExerciseCard';
+
+declare const __APP_VERSION__: string;
 
 function getMaxScoreForExercise(ex: Exercise): number {
   if (ex.kind === 'written-arithmetic' || ex.kind === 'written-division') return 2;
@@ -106,6 +110,7 @@ export function App() {
   const [selectedGrade, setSelectedGrade] = useState<GradeId>(4);
   const [volumeFilter, setVolumeFilter] = useState<VolumeFilter>('all');
   const [selectedTopicId, setSelectedTopicId] = useState<string>('matek-4-1000-ismetles');
+  const [isTopicPickerOpen, setIsTopicPickerOpen] = useState<boolean>(false);
   const [exerciseCount, setExerciseCount] = useState<number>(6);
   const [allowAnswerEdit, setAllowAnswerEdit] = useState<boolean>(false);
   const [includePrintKey, setIncludePrintKey] = useState<boolean>(true);
@@ -146,7 +151,6 @@ export function App() {
   );
 
   const summaryBoxRef = useRef<HTMLElement | null>(null);
-  const topicsSectionRef = useRef<HTMLElement | null>(null);
 
   const handleRegenerate = (topicId = selectedTopicId, count = exerciseCount) => {
     const nextExercises = generateWorksheet(topicId, count);
@@ -167,10 +171,8 @@ export function App() {
 
   const handleSelectTopic = (topicId: string) => {
     setSelectedTopicId(topicId);
+    setIsTopicPickerOpen(false);
     handleRegenerate(topicId, exerciseCount);
-    requestAnimationFrame(() => {
-      summaryBoxRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
   };
 
   const handleCheckAll = () => {
@@ -381,124 +383,144 @@ export function App() {
 
       {/* Main Content */}
       <main className="max-w-6xl w-full mx-auto px-4 py-6 flex-1 space-y-6">
-        {/* Topic Selector Grid (Hidden in Print) */}
-        <section ref={topicsSectionRef} className="print:hidden scroll-mt-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500">
-              Válassz témakört ({selectedGrade}. osztály – Matematika Munkafüzet I. és II. kötet)
-            </h2>
-
-            {/* Volume Filter Tabs */}
-            <div className="inline-flex bg-slate-200/80 p-1 rounded-xl self-start">
-              {[
-                { id: 'all' as VolumeFilter, label: 'Mindkét kötet (1–12. fejezet)' },
-                { id: 'vol1' as VolumeFilter, label: 'I. kötet (1–6. fejezet)' },
-                { id: 'vol2' as VolumeFilter, label: 'II. kötet (7–12. fejezet)' },
-              ].map((tab) => (
-                <button
-                  key={tab.id}
-                  type="button"
-                  onClick={() => setVolumeFilter(tab.id)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
-                    volumeFilter === tab.id
-                      ? 'bg-white text-indigo-700 shadow-sm'
-                      : 'text-slate-600 hover:text-slate-900'
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
-            {filteredTopics.map((topic) => {
-              const isSelected = topic.id === selectedTopicId;
-              return (
-                <button
-                  key={topic.id}
-                  type="button"
-                  onClick={() => handleSelectTopic(topic.id)}
-                  className={`text-left p-4 rounded-2xl border-2 transition-all flex flex-col justify-between ${
-                    isSelected
-                      ? 'border-indigo-600 bg-indigo-50/70 shadow-md ring-2 ring-indigo-600/15'
-                      : 'border-slate-200 bg-white hover:border-indigo-300 hover:shadow-sm'
-                  }`}
-                >
-                  <div>
-                    <div className="flex items-center justify-between gap-2 mb-2">
-                      <span
-                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold ${
-                          isSelected
-                            ? 'bg-indigo-600 text-white'
-                            : topic.volumeId === 'vol1'
-                            ? 'bg-indigo-50 text-indigo-800'
-                            : 'bg-emerald-50 text-emerald-800'
-                        }`}
-                      >
-                        {renderTopicIcon(topic.iconName)}
-                        <span>{topic.badge}</span>
-                      </span>
-                      <span className="text-[11px] font-semibold text-slate-400">
-                        {topic.volume}
-                      </span>
-                    </div>
-                    <h3 className="font-bold text-slate-900 text-base mb-1">
-                      {topic.title}
-                    </h3>
-                    <p className="text-xs text-slate-600 line-clamp-2">
-                      {topic.description}
-                    </p>
-                  </div>
-
-                  <div className="mt-3 pt-2.5 border-t border-slate-100 flex flex-wrap gap-1">
-                    {topic.subtopics.slice(0, 2).map((sub, idx) => (
-                      <span
-                        key={idx}
-                        className="text-[11px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md"
-                      >
-                        • {sub}
-                      </span>
-                    ))}
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* Action Toolbar & Live Score Summary (Hidden in Print) */}
+        {/* Action Toolbar, Collapsible Topic Selector & Live Score Summary (Hidden in Print) */}
         <section
           ref={summaryBoxRef}
           className="bg-white rounded-2xl border-2 border-indigo-200 p-4 shadow-md print:hidden scroll-mt-3"
         >
-          {/* Active Topic Banner inside Summary Box */}
-          <div className="flex flex-wrap items-center justify-between gap-2 pb-3 mb-3 border-b border-slate-100">
-            <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-indigo-600 text-white">
-                {activeTopic && renderTopicIcon(activeTopic.iconName)}
-                <span>{activeTopic?.badge}</span>
-              </span>
-              <h2 className="text-base font-extrabold text-slate-900">
-                {activeTopic?.title}
-              </h2>
-              <span className="text-xs font-medium text-slate-400 hidden sm:inline">
-                ({activeTopic?.volume})
-              </span>
+          {/* Active Topic Header Bar (Click to toggle topic selector) */}
+          <div className="pb-3 mb-3 border-b border-slate-100">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <button
+                type="button"
+                onClick={() => setIsTopicPickerOpen((prev) => !prev)}
+                className="group flex items-center gap-2.5 text-left rounded-xl p-1 -m-1 hover:bg-slate-50 transition flex-1 min-w-0"
+              >
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-indigo-600 text-white shrink-0 shadow-sm">
+                  {activeTopic && renderTopicIcon(activeTopic.iconName)}
+                  <span>{activeTopic?.badge}</span>
+                </span>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h2 className="text-sm sm:text-base font-extrabold text-slate-900 group-hover:text-indigo-700 transition truncate">
+                      {activeTopic?.title}
+                    </h2>
+                    <span className="text-xs font-medium text-slate-400 hidden md:inline shrink-0">
+                      ({activeTopic?.volume})
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-500 truncate hidden sm:block">
+                    {activeTopic?.subtitle}
+                  </p>
+                </div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setIsTopicPickerOpen((prev) => !prev)}
+                aria-expanded={isTopicPickerOpen}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition shrink-0 ${
+                  isTopicPickerOpen
+                    ? 'bg-indigo-600 text-white shadow-sm'
+                    : 'text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200/80'
+                }`}
+              >
+                <span>{isTopicPickerOpen ? 'Fejezetek elrejtése' : 'Fejezet váltása'}</span>
+                {isTopicPickerOpen ? (
+                  <ChevronUp className="w-4 h-4" />
+                ) : (
+                  <ChevronDown className="w-4 h-4" />
+                )}
+              </button>
             </div>
 
-            <button
-              type="button"
-              onClick={() =>
-                topicsSectionRef.current?.scrollIntoView({
-                  behavior: 'smooth',
-                  block: 'start',
-                })
-              }
-              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition"
-            >
-              <ArrowUp className="w-3.5 h-3.5" /> Témakörök választása
-            </button>
+            {/* Expandable Compact Topic Selector Panel */}
+            {isTopicPickerOpen && (
+              <div className="mt-3 pt-3 border-t border-slate-100">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                  <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                    Válassz fejezetet ({selectedGrade}. osztály – Matematika)
+                  </span>
+
+                  {/* Volume Filter Pills */}
+                  <div className="inline-flex bg-slate-100 p-1 rounded-xl self-start">
+                    {[
+                      { id: 'all' as VolumeFilter, label: 'Mind (1–12.)' },
+                      { id: 'vol1' as VolumeFilter, label: 'I. kötet (1–6.)' },
+                      { id: 'vol2' as VolumeFilter, label: 'II. kötet (7–12.)' },
+                    ].map((tab) => (
+                      <button
+                        key={tab.id}
+                        type="button"
+                        onClick={() => setVolumeFilter(tab.id)}
+                        className={`px-2.5 py-1 rounded-lg text-xs font-bold transition ${
+                          volumeFilter === tab.id
+                            ? 'bg-white text-indigo-700 shadow-sm'
+                            : 'text-slate-600 hover:text-slate-900'
+                        }`}
+                      >
+                        {tab.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Compact 1-col (mobile) / 2-col (tablet & desktop) Topic List */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-[60vh] overflow-y-auto pr-0.5">
+                  {filteredTopics.map((topic) => {
+                    const isSelected = topic.id === selectedTopicId;
+                    return (
+                      <button
+                        key={topic.id}
+                        type="button"
+                        onClick={() => handleSelectTopic(topic.id)}
+                        className={`text-left px-3 py-2.5 rounded-xl border transition-all flex items-center justify-between gap-2.5 ${
+                          isSelected
+                            ? 'border-indigo-600 bg-indigo-50/80 shadow-sm ring-1 ring-indigo-600/20'
+                            : 'border-slate-200 bg-slate-50/40 hover:bg-white hover:border-indigo-300'
+                        }`}
+                      >
+                        <div className="flex items-start gap-2.5 min-w-0 flex-1">
+                          <span
+                            className={`inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[11px] font-bold shrink-0 mt-0.5 ${
+                              isSelected
+                                ? 'bg-indigo-600 text-white'
+                                : topic.volumeId === 'vol1'
+                                ? 'bg-indigo-100/80 text-indigo-800'
+                                : 'bg-emerald-100/80 text-emerald-800'
+                            }`}
+                          >
+                            {renderTopicIcon(topic.iconName)}
+                            <span>{topic.chapterOrder}.</span>
+                          </span>
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-1.5">
+                              <span className="font-bold text-slate-900 text-xs sm:text-sm truncate">
+                                {topic.title}
+                              </span>
+                            </div>
+                            <p className="text-[11px] text-slate-500 truncate">
+                              {topic.subtitle}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          <span className="text-[10px] font-semibold text-slate-400 hidden md:inline">
+                            {topic.volumeId === 'vol1' ? 'I. kötet' : 'II. kötet'}
+                          </span>
+                          {isSelected && (
+                            <span className="w-5 h-5 rounded-full bg-indigo-600 text-white flex items-center justify-center">
+                              <Check className="w-3 h-3" />
+                            </span>
+                          )}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
@@ -811,9 +833,14 @@ export function App() {
       {/* Footer */}
       <footer className="bg-white border-t border-slate-200 py-4 text-xs text-slate-500 print:hidden">
         <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-          <span className="text-left">
-            Készült az Oktatási Hivatal NAT 2020 munkafüzetei alapján.
-          </span>
+          <div className="flex flex-wrap items-center gap-2 text-left">
+            <span>
+              Készült az Oktatási Hivatal NAT 2020 munkafüzetei alapján.
+            </span>
+            <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 font-mono text-[11px] font-semibold">
+              v{__APP_VERSION__}
+            </span>
+          </div>
           <span className="text-right font-medium text-slate-600 self-end sm:self-auto">
             Kapcsolat:{' '}
             <a
