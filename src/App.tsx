@@ -34,6 +34,8 @@ import {
 import { generateWorksheet } from './generators/mathGrade4';
 import { ExerciseCard } from './components/ExerciseCard';
 
+declare const __APP_VERSION__: string;
+
 function getMaxScoreForExercise(ex: Exercise): number {
   if (ex.kind === 'written-arithmetic' || ex.kind === 'written-division') return 2;
   if (ex.kind === 'rounding-neighbors') return 3;
@@ -831,9 +833,14 @@ export function App() {
       {/* Footer */}
       <footer className="bg-white border-t border-slate-200 py-4 text-xs text-slate-500 print:hidden">
         <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-          <span className="text-left">
-            Készült az Oktatási Hivatal NAT 2020 munkafüzetei alapján.
-          </span>
+          <div className="flex flex-wrap items-center gap-2 text-left">
+            <span>
+              Készült az Oktatási Hivatal NAT 2020 munkafüzetei alapján.
+            </span>
+            <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 font-mono text-[11px] font-semibold">
+              v{__APP_VERSION__}
+            </span>
+          </div>
           <span className="text-right font-medium text-slate-600 self-end sm:self-auto">
             Kapcsolat:{' '}
             <a
