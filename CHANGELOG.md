@@ -4,6 +4,24 @@ Minden lényeges változás ebben a fájlban kerül dokumentálásra.
 
 A formátum a [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/) ajánlásain alapul, a projekt pedig a [Szemantikus Verziózást (SemVer)](https://semver.org/lang/hu/) követi (`MAJOR.MINOR.PATCH`).
 
+## [1.1.1] - 2026-11-11
+
+### Módosítva (Changed)
+- **Fejléc és navigáció:**
+  - Alcím finomítása: *"Otthoni interaktív gyakorlófeladatok (NAT 2020)"*.
+  - Narancssárga `NAT 2020` címke eltávolítva a főcím mellől a letisztultabb megjelenésért.
+  - Mobilon összébb húzott évfolyam-választó sáv (az összes évfolyam kényelmesen kifér egyetlen sorban).
+  - A fejezetszám jelvény és a fejezetváltó gomb egyesítve a blokk legtetején (`[✨ X. fejezet] Fejezet váltása ▾`), a cím és a leírás pedig teljes szélességű lett (megszűnt a mobilos jobbra csúszás).
+- **Vezérlősáv és kiértékelés blokk:**
+  - A fejezetblokk és az alsó kiértékelés blokk egységes, karakteres indigó–lila színátmenetes hátteret kapott, elválva a feladatkártyáktól.
+  - Az „Összes ellenőrzése & Értékelés” gomb áthelyezve az alsó kiértékelés kártyára kiemelt zöld gombként.
+- **Feladatkártyák (UI/UX):**
+  - Beviteli mezők segédszövegeinek (`placeholder`) méretezése és a mezők szélességének növelése, így a segédszövegek többé sehol sem lógnak ki a dobozból.
+  - Felesleges Enter-es segédszöveg törlése a feladatkártyák aljáról, az „Azonnali ellenőrzés” gomb szövegtörésének megszüntetése.
+- **Lábléc:** Verziószám jelvény középre rendezése.
+
+---
+
 ## [1.1.0] - 2026-11-10
 
 ### Hozzáadva (Added)
