@@ -310,12 +310,9 @@ export function App() {
                 <h1 className="text-xl font-extrabold tracking-tight">
                   Tudásépítő Feladatgenerátor
                 </h1>
-                <span className="text-xs font-bold uppercase px-2 py-0.5 rounded-full bg-amber-400 text-slate-950">
-                  NAT 2020
-                </span>
               </div>
               <p className="text-xs text-indigo-100">
-                Otthoni interaktív és nyomtatható gyakorlófeladatok (I. és II. kötet)
+                Otthoni interaktív gyakorlófeladatok (NAT 2020)
               </p>
             </div>
           </div>
@@ -353,8 +350,8 @@ export function App() {
 
         {/* Grade Selector Bar */}
         <div className="bg-indigo-950/30 border-t border-white/10">
-          <div className="max-w-6xl mx-auto px-4 py-2 flex items-center gap-2 overflow-x-auto">
-            <span className="text-xs font-semibold text-indigo-200 shrink-0 mr-1">
+          <div className="max-w-6xl mx-auto px-3 sm:px-4 py-2 flex items-center gap-1 sm:gap-2 overflow-x-auto">
+            <span className="text-[11px] sm:text-xs font-semibold text-indigo-200 shrink-0 mr-0.5 sm:mr-1">
               Évfolyam:
             </span>
             {GRADES.map((g) => {
@@ -365,7 +362,7 @@ export function App() {
                   type="button"
                   disabled={!g.available}
                   onClick={() => setSelectedGrade(g.grade)}
-                  className={`px-3 py-1 rounded-lg text-xs font-bold shrink-0 transition ${
+                  className={`px-2 sm:px-3 py-1 rounded-lg text-[11px] sm:text-xs font-bold shrink-0 transition ${
                     isSelected
                       ? 'bg-amber-400 text-slate-950 shadow-sm'
                       : g.available
@@ -386,45 +383,26 @@ export function App() {
         {/* Action Toolbar, Collapsible Topic Selector & Live Score Summary (Hidden in Print) */}
         <section
           ref={summaryBoxRef}
-          className="bg-white rounded-2xl border-2 border-indigo-200 p-4 shadow-md print:hidden scroll-mt-3"
+          className="bg-gradient-to-br from-indigo-100/90 via-indigo-50 to-violet-100/80 rounded-2xl border-2 border-indigo-300 p-4 shadow-md print:hidden scroll-mt-3"
         >
-          {/* Active Topic Header Bar (Click to toggle topic selector) */}
-          <div className="pb-3 mb-3 border-b border-slate-100">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <button
-                type="button"
-                onClick={() => setIsTopicPickerOpen((prev) => !prev)}
-                className="group flex items-center gap-2.5 text-left rounded-xl p-1 -m-1 hover:bg-slate-50 transition flex-1 min-w-0"
-              >
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-indigo-600 text-white shrink-0 shadow-sm">
-                  {activeTopic && renderTopicIcon(activeTopic.iconName)}
-                  <span>{activeTopic?.badge}</span>
-                </span>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <h2 className="text-sm sm:text-base font-extrabold text-slate-900 group-hover:text-indigo-700 transition truncate">
-                      {activeTopic?.title}
-                    </h2>
-                    <span className="text-xs font-medium text-slate-400 hidden md:inline shrink-0">
-                      ({activeTopic?.volume})
-                    </span>
-                  </div>
-                  <p className="text-xs text-slate-500 truncate hidden sm:block">
-                    {activeTopic?.subtitle}
-                  </p>
-                </div>
-              </button>
-
+          {/* Active Topic Header Bar */}
+          <div className="pb-3.5 mb-3.5 border-b border-indigo-200/80">
+            {/* Top row: Combined Chapter Badge + Switcher Button & Volume Tag */}
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-2.5">
               <button
                 type="button"
                 onClick={() => setIsTopicPickerOpen((prev) => !prev)}
                 aria-expanded={isTopicPickerOpen}
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition shrink-0 ${
+                className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition shadow-md ${
                   isTopicPickerOpen
-                    ? 'bg-indigo-600 text-white shadow-sm'
-                    : 'text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200/80'
+                    ? 'bg-slate-800 text-white hover:bg-slate-900 ring-2 ring-slate-800/20'
+                    : 'bg-indigo-600 text-white hover:bg-indigo-700 active:scale-95 ring-2 ring-indigo-600/25'
                 }`}
               >
+                <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-white/20 text-white text-xs font-bold">
+                  {activeTopic && renderTopicIcon(activeTopic.iconName)}
+                  <span>{activeTopic?.badge}</span>
+                </span>
                 <span>{isTopicPickerOpen ? 'Fejezetek elrejtése' : 'Fejezet váltása'}</span>
                 {isTopicPickerOpen ? (
                   <ChevronUp className="w-4 h-4" />
@@ -432,18 +410,35 @@ export function App() {
                   <ChevronDown className="w-4 h-4" />
                 )}
               </button>
+
+              <span className="text-xs font-bold text-indigo-800 bg-white/85 px-2.5 py-1 rounded-lg border border-indigo-200/80 shadow-sm">
+                {activeTopic?.volume}
+              </span>
+            </div>
+
+            {/* Full-width Title & Description (aligned to left edge on mobile & desktop) */}
+            <div
+              onClick={() => setIsTopicPickerOpen((prev) => !prev)}
+              className="cursor-pointer rounded-xl p-1 -m-1 hover:bg-white/40 transition"
+            >
+              <h2 className="text-base sm:text-lg font-extrabold text-indigo-950 leading-snug">
+                {activeTopic?.title}
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-700 mt-1 leading-relaxed">
+                {activeTopic?.description}
+              </p>
             </div>
 
             {/* Expandable Compact Topic Selector Panel */}
             {isTopicPickerOpen && (
-              <div className="mt-3 pt-3 border-t border-slate-100">
+              <div className="mt-3.5 pt-3.5 border-t border-indigo-200/80 bg-white/90 rounded-2xl p-3 border shadow-inner">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
-                  <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                  <span className="text-xs font-bold uppercase tracking-wider text-indigo-900">
                     Válassz fejezetet ({selectedGrade}. osztály – Matematika)
                   </span>
 
                   {/* Volume Filter Pills */}
-                  <div className="inline-flex bg-slate-100 p-1 rounded-xl self-start">
+                  <div className="inline-flex bg-indigo-100/80 p-1 rounded-xl self-start">
                     {[
                       { id: 'all' as VolumeFilter, label: 'Mind (1–12.)' },
                       { id: 'vol1' as VolumeFilter, label: 'I. kötet (1–6.)' },
@@ -455,8 +450,8 @@ export function App() {
                         onClick={() => setVolumeFilter(tab.id)}
                         className={`px-2.5 py-1 rounded-lg text-xs font-bold transition ${
                           volumeFilter === tab.id
-                            ? 'bg-white text-indigo-700 shadow-sm'
-                            : 'text-slate-600 hover:text-slate-900'
+                            ? 'bg-indigo-600 text-white shadow-sm'
+                            : 'text-indigo-900 hover:bg-white/60'
                         }`}
                       >
                         {tab.label}
@@ -474,47 +469,46 @@ export function App() {
                         key={topic.id}
                         type="button"
                         onClick={() => handleSelectTopic(topic.id)}
-                        className={`text-left px-3 py-2.5 rounded-xl border transition-all flex items-center justify-between gap-2.5 ${
+                        className={`text-left px-3 py-2.5 rounded-xl border-2 transition-all flex flex-col justify-between gap-1 ${
                           isSelected
-                            ? 'border-indigo-600 bg-indigo-50/80 shadow-sm ring-1 ring-indigo-600/20'
-                            : 'border-slate-200 bg-slate-50/40 hover:bg-white hover:border-indigo-300'
+                            ? 'border-indigo-600 bg-indigo-50 shadow-sm ring-1 ring-indigo-600/20'
+                            : 'border-slate-200 bg-white hover:bg-indigo-50/40 hover:border-indigo-300'
                         }`}
                       >
-                        <div className="flex items-start gap-2.5 min-w-0 flex-1">
-                          <span
-                            className={`inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[11px] font-bold shrink-0 mt-0.5 ${
-                              isSelected
-                                ? 'bg-indigo-600 text-white'
-                                : topic.volumeId === 'vol1'
-                                ? 'bg-indigo-100/80 text-indigo-800'
-                                : 'bg-emerald-100/80 text-emerald-800'
-                            }`}
-                          >
-                            {renderTopicIcon(topic.iconName)}
-                            <span>{topic.chapterOrder}.</span>
-                          </span>
-                          <div className="min-w-0 flex-1">
-                            <div className="flex items-center gap-1.5">
-                              <span className="font-bold text-slate-900 text-xs sm:text-sm truncate">
-                                {topic.title}
+                        <div className="flex items-center justify-between gap-2 w-full">
+                          <div className="flex items-center gap-2 min-w-0">
+                            <span
+                              className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[11px] font-bold shrink-0 ${
+                                isSelected
+                                  ? 'bg-indigo-600 text-white'
+                                  : topic.volumeId === 'vol1'
+                                  ? 'bg-indigo-100 text-indigo-800'
+                                  : 'bg-emerald-100 text-emerald-800'
+                              }`}
+                            >
+                              {renderTopicIcon(topic.iconName)}
+                              <span>{topic.chapterOrder}.</span>
+                            </span>
+                            <span className="font-bold text-slate-900 text-xs sm:text-sm leading-snug">
+                              {topic.title}
+                            </span>
+                          </div>
+
+                          <div className="flex items-center gap-1.5 shrink-0">
+                            <span className="text-[10px] font-semibold text-slate-400 hidden md:inline">
+                              {topic.volumeId === 'vol1' ? 'I. kötet' : 'II. kötet'}
+                            </span>
+                            {isSelected && (
+                              <span className="w-5 h-5 rounded-full bg-indigo-600 text-white flex items-center justify-center">
+                                <Check className="w-3 h-3" />
                               </span>
-                            </div>
-                            <p className="text-[11px] text-slate-500 truncate">
-                              {topic.subtitle}
-                            </p>
+                            )}
                           </div>
                         </div>
 
-                        <div className="flex items-center gap-1.5 shrink-0">
-                          <span className="text-[10px] font-semibold text-slate-400 hidden md:inline">
-                            {topic.volumeId === 'vol1' ? 'I. kötet' : 'II. kötet'}
-                          </span>
-                          {isSelected && (
-                            <span className="w-5 h-5 rounded-full bg-indigo-600 text-white flex items-center justify-center">
-                              <Check className="w-3 h-3" />
-                            </span>
-                          )}
-                        </div>
+                        <p className="text-[11px] text-slate-600 leading-snug w-full">
+                          {topic.subtitle}
+                        </p>
                       </button>
                     );
                   })}
@@ -526,7 +520,7 @@ export function App() {
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             {/* Left controls: Count & Regenerate */}
             <div className="flex flex-wrap items-center gap-3">
-              <div className="flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-xl">
+              <div className="flex items-center gap-2 bg-white/90 border border-indigo-200/80 px-3 py-1.5 rounded-xl shadow-sm">
                 <label
                   htmlFor="count-select"
                   className="text-xs font-bold text-slate-600"
@@ -561,14 +555,6 @@ export function App() {
 
               <button
                 type="button"
-                onClick={handleCheckAll}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 text-white hover:bg-emerald-700 active:scale-95 transition shadow-sm"
-              >
-                <CheckCheck className="w-4 h-4" /> Összes ellenőrzése & Értékelés
-              </button>
-
-              <button
-                type="button"
                 onClick={() => window.print()}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-slate-800 text-white hover:bg-slate-900 transition"
               >
@@ -599,7 +585,7 @@ export function App() {
             </div>
 
             {/* Right: Percentage Evaluation Box */}
-            <div className="flex items-center gap-4 bg-gradient-to-r from-indigo-50 to-violet-50 border border-indigo-200 px-4 py-2.5 rounded-xl">
+            <div className="flex items-center gap-4 bg-white/90 border border-indigo-200/90 px-4 py-2.5 rounded-xl shadow-sm">
               <div className="flex items-center gap-2">
                 <Trophy className="w-6 h-6 text-amber-500 shrink-0" />
                 <div>
@@ -665,27 +651,27 @@ export function App() {
         </section>
 
         {/* Bottom Evaluation Card */}
-        <section className="bg-white rounded-2xl border-2 border-slate-200 p-6 shadow-sm print:hidden">
+        <section className="bg-gradient-to-br from-indigo-100/90 via-indigo-50 to-violet-100/80 rounded-2xl border-2 border-indigo-300 p-6 shadow-md print:hidden">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
             <div>
-              <h3 className="text-lg font-extrabold text-slate-900">
+              <h3 className="text-lg font-extrabold text-indigo-950">
                 Értékeld a munkádat! – Összesített eredmény
               </h3>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-600">
                 A munkafüzet értékelő táblázata alapján (ellenőrzött feladatok: {stats.submittedCount} / {exercises.length})
               </p>
             </div>
             <button
               type="button"
               onClick={handleCheckAll}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm transition"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold bg-emerald-600 text-white hover:bg-emerald-700 active:scale-95 shadow-sm transition"
             >
-              <CheckCheck className="w-4 h-4" /> Feladatsor kiértékelése ({stats.percentage}%)
+              <CheckCheck className="w-4 h-4" /> Összes ellenőrzése & Értékelés
             </button>
           </div>
 
           {/* Progress Bar */}
-          <div className="w-full h-4 bg-slate-100 rounded-full overflow-hidden mb-5 border border-slate-200">
+          <div className="w-full h-4 bg-white/90 rounded-full overflow-hidden mb-5 border border-indigo-200/80 shadow-inner">
             <div
               className={`h-full transition-all duration-500 ${
                 stats.percentage >= 85
@@ -735,8 +721,8 @@ export function App() {
                 key={idx}
                 className={`p-3.5 rounded-xl border-2 transition ${
                   tier.active
-                    ? 'border-indigo-600 bg-indigo-50/80 shadow-sm scale-[1.02]'
-                    : 'border-slate-200 bg-slate-50/60 opacity-75'
+                    ? 'border-indigo-600 bg-white shadow-md scale-[1.02]'
+                    : 'border-indigo-200/70 bg-white/80 opacity-85'
                 }`}
               >
                 <div className="text-2xl mb-1">{tier.emoji}</div>
@@ -832,16 +818,16 @@ export function App() {
 
       {/* Footer */}
       <footer className="bg-white border-t border-slate-200 py-4 text-xs text-slate-500 print:hidden">
-        <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-          <div className="flex flex-wrap items-center gap-2 text-left">
-            <span>
-              Készült az Oktatási Hivatal NAT 2020 munkafüzetei alapján.
-            </span>
-            <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 font-mono text-[11px] font-semibold">
+        <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-3 items-center gap-2">
+          <span className="text-center sm:text-left">
+            Készült az Oktatási Hivatal NAT 2020 munkafüzetei alapján.
+          </span>
+          <div className="flex justify-center">
+            <span className="px-2.5 py-0.5 rounded-md bg-slate-100 text-slate-600 font-mono text-[11px] font-semibold">
               v{__APP_VERSION__}
             </span>
           </div>
-          <span className="text-right font-medium text-slate-600 self-end sm:self-auto">
+          <span className="text-center sm:text-right font-medium text-slate-600">
             Kapcsolat:{' '}
             <a
               href="mailto:szabobalint@outlook.com"

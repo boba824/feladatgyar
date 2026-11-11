@@ -82,7 +82,7 @@ const WrittenGridDisplay: React.FC<{
               value={userExact}
               onChange={(e) => onChangeExact(e.target.value)}
               placeholder="Írd be..."
-              className={`w-36 px-3 py-1.5 font-mono text-lg font-bold rounded-lg border-2 outline-none transition print:hidden disabled:cursor-not-allowed ${
+              className={`w-40 px-3 py-1.5 font-mono text-lg font-bold placeholder:font-sans placeholder:text-xs placeholder:font-normal rounded-lg border-2 outline-none transition print:hidden disabled:cursor-not-allowed ${
                 submitted
                   ? isExactCorrect
                     ? 'border-emerald-500 bg-emerald-50 text-emerald-900'
@@ -139,7 +139,7 @@ const WrittenGridDisplay: React.FC<{
               value={userExact}
               onChange={(e) => onChangeExact(e.target.value)}
               placeholder="Eredmény..."
-              className={`w-40 text-right px-3 py-1.5 font-mono text-lg font-bold rounded-lg border-2 outline-none transition print:hidden disabled:cursor-not-allowed ${
+              className={`w-40 text-right px-3 py-1.5 font-mono text-lg font-bold placeholder:font-sans placeholder:text-xs placeholder:font-normal rounded-lg border-2 outline-none transition print:hidden disabled:cursor-not-allowed ${
                 submitted
                   ? isExactCorrect
                     ? 'border-emerald-500 bg-emerald-50 text-emerald-900'
@@ -392,7 +392,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
                     value={attempt.userValues.estimate || ''}
                     onChange={(e) => setFieldValue('estimate', e.target.value)}
                     placeholder="Becslés..."
-                    className={`w-40 px-3 py-1.5 font-mono text-base font-bold rounded-lg border-2 outline-none transition print:hidden disabled:cursor-not-allowed ${
+                    className={`w-40 px-3 py-1.5 font-mono text-base font-bold placeholder:font-sans placeholder:text-xs placeholder:font-normal rounded-lg border-2 outline-none transition print:hidden disabled:cursor-not-allowed ${
                       attempt.submitted
                         ? isEstCorrect
                           ? 'border-emerald-500 bg-emerald-50 text-emerald-900'
@@ -477,7 +477,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
                     value={attempt.userValues.quotient || ''}
                     onChange={(e) => setFieldValue('quotient', e.target.value)}
                     placeholder="Hányados..."
-                    className={`w-32 px-3 py-1.5 font-mono text-lg font-bold rounded-lg border-2 outline-none print:hidden disabled:cursor-not-allowed ${
+                    className={`w-36 px-3 py-1.5 font-mono text-lg font-bold placeholder:font-sans placeholder:text-xs placeholder:font-normal rounded-lg border-2 outline-none print:hidden disabled:cursor-not-allowed ${
                       attempt.submitted
                         ? qOk
                           ? 'border-emerald-500 bg-emerald-50 text-emerald-900'
@@ -500,7 +500,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
                     value={attempt.userValues.remainder ?? ''}
                     onChange={(e) => setFieldValue('remainder', e.target.value)}
                     placeholder="Maradék"
-                    className={`w-24 px-3 py-1.5 font-mono text-lg font-bold rounded-lg border-2 outline-none print:hidden disabled:cursor-not-allowed ${
+                    className={`w-28 px-3 py-1.5 font-mono text-lg font-bold placeholder:font-sans placeholder:text-xs placeholder:font-normal rounded-lg border-2 outline-none print:hidden disabled:cursor-not-allowed ${
                       attempt.submitted
                         ? rOk
                           ? 'border-emerald-500 bg-emerald-50 text-emerald-900'
@@ -547,7 +547,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
                     value={attempt.userValues.smaller || ''}
                     onChange={(e) => setFieldValue('smaller', e.target.value)}
                     placeholder="Kisebb..."
-                    className={`w-full px-3 py-1.5 font-mono font-bold rounded-lg border-2 outline-none print:hidden disabled:cursor-not-allowed ${
+                    className={`w-full px-3 py-1.5 font-mono font-bold placeholder:font-sans placeholder:text-xs placeholder:font-normal rounded-lg border-2 outline-none print:hidden disabled:cursor-not-allowed ${
                       attempt.submitted
                         ? sOk
                           ? 'border-emerald-500 bg-emerald-50 text-emerald-900'
@@ -573,7 +573,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
                     value={attempt.userValues.larger || ''}
                     onChange={(e) => setFieldValue('larger', e.target.value)}
                     placeholder="Nagyobb..."
-                    className={`w-full px-3 py-1.5 font-mono font-bold rounded-lg border-2 outline-none print:hidden disabled:cursor-not-allowed ${
+                    className={`w-full px-3 py-1.5 font-mono font-bold placeholder:font-sans placeholder:text-xs placeholder:font-normal rounded-lg border-2 outline-none print:hidden disabled:cursor-not-allowed ${
                       attempt.submitted
                         ? lOk
                           ? 'border-emerald-500 bg-emerald-50 text-emerald-900'
@@ -595,7 +595,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
                     value={attempt.userValues.rounded || ''}
                     onChange={(e) => setFieldValue('rounded', e.target.value)}
                     placeholder="≈ kerekítve"
-                    className={`w-full px-3 py-1.5 font-mono font-bold rounded-lg border-2 outline-none print:hidden disabled:cursor-not-allowed ${
+                    className={`w-full px-3 py-1.5 font-mono font-bold placeholder:font-sans placeholder:text-xs placeholder:font-normal rounded-lg border-2 outline-none print:hidden disabled:cursor-not-allowed ${
                       attempt.submitted
                         ? rOk
                           ? 'border-emerald-500 bg-emerald-50 text-emerald-900'
@@ -630,7 +630,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
               value={attempt.userValues.answer || ''}
               onChange={(e) => setFieldValue('answer', e.target.value)}
               placeholder="Írd be a számot..."
-              className={`w-44 px-3 py-1.5 font-mono text-lg font-bold rounded-lg border-2 outline-none print:hidden disabled:cursor-not-allowed ${
+              className={`w-48 px-3 py-1.5 font-mono text-lg font-bold placeholder:font-sans placeholder:text-xs placeholder:font-normal rounded-lg border-2 outline-none print:hidden disabled:cursor-not-allowed ${
                 attempt.submitted
                   ? attempt.isCorrect
                     ? 'border-emerald-500 bg-emerald-50 text-emerald-900'
@@ -659,7 +659,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
               value={attempt.userValues.answer || ''}
               onChange={(e) => setFieldValue('answer', e.target.value)}
               placeholder="Mennyiség..."
-              className={`w-36 px-3 py-1.5 font-mono text-lg font-bold rounded-lg border-2 outline-none print:hidden disabled:cursor-not-allowed ${
+              className={`w-40 px-3 py-1.5 font-mono text-lg font-bold placeholder:font-sans placeholder:text-xs placeholder:font-normal rounded-lg border-2 outline-none print:hidden disabled:cursor-not-allowed ${
                 attempt.submitted
                   ? attempt.isCorrect
                     ? 'border-emerald-500 bg-emerald-50 text-emerald-900'
@@ -716,7 +716,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
                 value={attempt.userValues.answer || ''}
                 onChange={(e) => setFieldValue('answer', e.target.value)}
                 placeholder="Mennyi?"
-                className={`w-36 px-3 py-1.5 font-mono text-lg font-bold rounded-lg border-2 outline-none print:hidden disabled:cursor-not-allowed ${
+                className={`w-36 px-3 py-1.5 font-mono text-lg font-bold placeholder:font-sans placeholder:text-xs placeholder:font-normal rounded-lg border-2 outline-none print:hidden disabled:cursor-not-allowed ${
                   attempt.submitted
                     ? attempt.isCorrect
                       ? 'border-emerald-500 bg-emerald-50 text-emerald-900'
@@ -747,7 +747,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
                 value={attempt.userValues.answer || ''}
                 onChange={(e) => setFieldValue('answer', e.target.value)}
                 placeholder="Eredmény..."
-                className={`w-36 px-3 py-1.5 font-mono text-lg font-bold rounded-lg border-2 outline-none print:hidden disabled:cursor-not-allowed ${
+                className={`w-40 px-3 py-1.5 font-mono text-lg font-bold placeholder:font-sans placeholder:text-xs placeholder:font-normal rounded-lg border-2 outline-none print:hidden disabled:cursor-not-allowed ${
                   attempt.submitted
                     ? attempt.isCorrect
                       ? 'border-emerald-500 bg-emerald-50 text-emerald-900'
@@ -780,7 +780,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
               placeholder={
                 exercise.direction === 'roman-to-arabic' ? 'Arab számmal...' : 'Római számmal...'
               }
-              className={`w-44 px-3 py-1.5 font-mono text-lg font-bold uppercase rounded-lg border-2 outline-none print:hidden disabled:cursor-not-allowed ${
+              className={`w-48 px-3 py-1.5 font-mono text-lg font-bold uppercase placeholder:normal-case placeholder:font-sans placeholder:text-xs placeholder:font-normal rounded-lg border-2 outline-none print:hidden disabled:cursor-not-allowed ${
                 attempt.submitted
                   ? attempt.isCorrect
                     ? 'border-emerald-500 bg-emerald-50 text-emerald-900'
@@ -812,7 +812,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
                 value={attempt.userValues.answer || ''}
                 onChange={(e) => setFieldValue('answer', e.target.value)}
                 placeholder="Számérték..."
-                className={`w-40 px-3 py-1.5 font-mono text-lg font-bold rounded-lg border-2 outline-none print:hidden disabled:cursor-not-allowed ${
+                className={`w-40 px-3 py-1.5 font-mono text-lg font-bold placeholder:font-sans placeholder:text-xs placeholder:font-normal rounded-lg border-2 outline-none print:hidden disabled:cursor-not-allowed ${
                   attempt.submitted
                     ? attempt.isCorrect
                       ? 'border-emerald-500 bg-emerald-50 text-emerald-900'
@@ -838,35 +838,24 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
       </div>
 
       {/* Card Footer with immediate check button (hidden on print) */}
-      <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between print:hidden">
-        <span className="text-xs text-slate-400">
-          {isLocked ? (
-            'A válasz rögzítve lett.'
-          ) : (
-            <>
-              Nyomj <kbd className="px-1.5 py-0.5 bg-slate-100 rounded border text-slate-600">Enter</kbd>-t vagy kattints az Ellenőrzésre!
-            </>
-          )}
-        </span>
-        <div className="flex items-center gap-2">
-          {attempt.submitted && allowAnswerEdit && (
-            <button
-              type="button"
-              onClick={resetAttempt}
-              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:bg-slate-100 transition"
-            >
-              <RotateCcw className="w-3.5 h-3.5" /> Törlés
-            </button>
-          )}
+      <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-end gap-2 print:hidden">
+        {attempt.submitted && allowAnswerEdit && (
           <button
             type="button"
-            disabled={isLocked}
-            onClick={evaluateCurrentExercise}
-            className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xl text-xs font-bold bg-indigo-600 text-white hover:bg-indigo-700 active:scale-95 transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
+            onClick={resetAttempt}
+            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:bg-slate-100 transition shrink-0"
           >
-            <CheckCircle2 className="w-4 h-4" /> {isLocked ? 'Ellenőrizve' : 'Azonnali ellenőrzés'}
+            <RotateCcw className="w-3.5 h-3.5" /> Törlés
           </button>
-        </div>
+        )}
+        <button
+          type="button"
+          disabled={isLocked}
+          onClick={evaluateCurrentExercise}
+          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 text-white hover:bg-indigo-700 active:scale-95 transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 whitespace-nowrap shrink-0"
+        >
+          <CheckCircle2 className="w-4 h-4" /> {isLocked ? 'Ellenőrizve' : 'Azonnali ellenőrzés'}
+        </button>
       </div>
     </div>
   );
