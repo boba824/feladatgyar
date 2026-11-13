@@ -33,6 +33,7 @@ import {
 } from './types/curriculum';
 import { generateWorksheet } from './generators/mathGrade4';
 import { generateMathGrade3Worksheet } from './generators/mathGrade3';
+import { generateMathGrade2Worksheet } from './generators/mathGrade2';
 import { generateHungarianWorksheet } from './generators/hungarianGrade4';
 import { checkHungarianAnswer, ExerciseCard } from './components/ExerciseCard';
 
@@ -44,6 +45,9 @@ function generateAnyWorksheet(topicId: string, count: number): Exercise[] {
   }
   if (topicId.startsWith('matek-3-')) {
     return generateMathGrade3Worksheet(topicId, count);
+  }
+  if (topicId.startsWith('matek-2-')) {
+    return generateMathGrade2Worksheet(topicId, count);
   }
   return generateWorksheet(topicId, count);
 }
@@ -373,7 +377,7 @@ export function App() {
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
       {/* Top Navbar (Hidden in Print) */}
-      <header className="bg-gradient-to-r from-indigo-700 via-indigo-600 to-violet-700 text-white shadow-md print:hidden">
+      <header className="bg-gradient-to-r from-blue-900 via-blue-800 to-indigo-900 text-white shadow-md print:hidden">
         <div className="max-w-6xl mx-auto px-4 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="w-11 h-11 rounded-2xl bg-white/15 backdrop-blur flex items-center justify-center shadow-inner">
@@ -389,7 +393,7 @@ export function App() {
                   Tudásépítő Feladatgenerátor
                 </h1>
               </div>
-              <p className="text-xs text-indigo-100">
+              <p className="text-xs text-blue-100">
                 Otthoni interaktív gyakorlófeladatok (NAT 2020)
               </p>
             </div>
@@ -407,10 +411,10 @@ export function App() {
                   onClick={() => handleSelectSubject(subj.id)}
                   className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition ${
                     active
-                      ? 'bg-white text-indigo-800 shadow-sm'
+                      ? 'bg-white text-blue-900 shadow-sm'
                       : subj.available
                       ? 'bg-white/10 text-white hover:bg-white/20'
-                      : 'bg-white/5 text-indigo-200/50 cursor-not-allowed'
+                      : 'bg-white/5 text-blue-200/50 cursor-not-allowed'
                   }`}
                 >
                   {subj.id === 'matek' && <Calculator className="w-4 h-4" />}
@@ -427,9 +431,9 @@ export function App() {
         </div>
 
         {/* Grade Selector Bar */}
-        <div className="bg-indigo-950/30 border-t border-white/10">
+        <div className="bg-blue-950/40 border-t border-white/10">
           <div className="max-w-6xl mx-auto px-3 sm:px-4 py-2 flex items-center gap-1 sm:gap-2 overflow-x-auto">
-            <span className="text-[11px] sm:text-xs font-semibold text-indigo-200 shrink-0 mr-0.5 sm:mr-1">
+            <span className="text-[11px] sm:text-xs font-semibold text-blue-200 shrink-0 mr-0.5 sm:mr-1">
               Évfolyam:
             </span>
             {GRADES.map((g) => {
@@ -444,8 +448,8 @@ export function App() {
                     isSelected
                       ? 'bg-amber-400 text-slate-950 shadow-sm'
                       : g.available
-                      ? 'text-indigo-100 hover:bg-white/10'
-                      : 'text-indigo-300/40 cursor-not-allowed'
+                      ? 'text-blue-100 hover:bg-white/10'
+                      : 'text-blue-300/40 cursor-not-allowed'
                   }`}
                 >
                   {g.label}
@@ -461,10 +465,10 @@ export function App() {
         {/* Action Toolbar, Collapsible Topic Selector & Live Score Summary (Hidden in Print) */}
         <section
           ref={summaryBoxRef}
-          className="bg-gradient-to-br from-indigo-100/90 via-indigo-50 to-violet-100/80 rounded-2xl border-2 border-indigo-300 p-4 shadow-md print:hidden scroll-mt-3"
+          className="bg-gradient-to-br from-blue-100/80 via-blue-50/50 to-indigo-100/70 rounded-2xl border-2 border-blue-200 p-4 shadow-md print:hidden scroll-mt-3"
         >
           {/* Active Topic Header Bar */}
-          <div className="pb-3.5 mb-3.5 border-b border-indigo-200/80">
+          <div className="pb-3.5 mb-3.5 border-b border-blue-200/80">
             {/* Top row: Combined Chapter Badge + Switcher Button & Volume Tag */}
             <div className="flex flex-wrap items-center justify-between gap-2 mb-2.5">
               <button
@@ -473,8 +477,8 @@ export function App() {
                 aria-expanded={isTopicPickerOpen}
                 className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition shadow-md ${
                   isTopicPickerOpen
-                    ? 'bg-slate-800 text-white hover:bg-slate-900 ring-2 ring-slate-800/20'
-                    : 'bg-indigo-600 text-white hover:bg-indigo-700 active:scale-95 ring-2 ring-indigo-600/25'
+                    ? 'bg-slate-900 text-white hover:bg-slate-800 ring-2 ring-slate-800/20'
+                    : 'bg-blue-700 text-white hover:bg-blue-800 active:scale-95 ring-2 ring-blue-700/25'
                 }`}
               >
                 <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-white/20 text-white text-xs font-bold">
@@ -489,7 +493,7 @@ export function App() {
                 )}
               </button>
 
-              <span className="text-xs font-bold text-indigo-800 bg-white/85 px-2.5 py-1 rounded-lg border border-indigo-200/80 shadow-sm">
+              <span className="text-xs font-bold text-blue-900 bg-white/85 px-2.5 py-1 rounded-lg border border-blue-200 shadow-sm">
                 {activeTopic?.volume}
               </span>
             </div>
@@ -499,7 +503,7 @@ export function App() {
               onClick={() => setIsTopicPickerOpen((prev) => !prev)}
               className="cursor-pointer rounded-xl p-1 -m-1 hover:bg-white/40 transition"
             >
-              <h2 className="text-base sm:text-lg font-extrabold text-indigo-950 leading-snug">
+              <h2 className="text-base sm:text-lg font-extrabold text-blue-950 leading-snug">
                 {activeTopic?.title}
               </h2>
               <p className="text-xs sm:text-sm text-slate-700 mt-1 leading-relaxed">
@@ -509,15 +513,15 @@ export function App() {
 
             {/* Expandable Compact Topic Selector Panel */}
             {isTopicPickerOpen && (
-              <div className="mt-3.5 pt-3.5 border-t border-indigo-200/80 bg-white/90 rounded-2xl p-3 border shadow-inner">
+              <div className="mt-3.5 pt-3.5 border-t border-blue-200/80 bg-white/95 rounded-2xl p-3 border shadow-inner">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
-                  <span className="text-xs font-bold uppercase tracking-wider text-indigo-900">
+                  <span className="text-xs font-bold uppercase tracking-wider text-blue-950">
                     Válassz fejezetet ({selectedGrade}. osztály –{' '}
                     {selectedSubject === 'magyar' ? 'Magyar nyelv' : 'Matematika'})
                   </span>
 
                   {/* Volume Filter Pills */}
-                  <div className="inline-flex bg-indigo-100/80 p-1 rounded-xl self-start">
+                  <div className="inline-flex bg-blue-50 p-1 rounded-xl self-start border border-blue-200">
                     {[
                       { id: 'all' as VolumeFilter, label: 'Mind (1–12.)' },
                       {
@@ -535,8 +539,8 @@ export function App() {
                         onClick={() => setVolumeFilter(tab.id)}
                         className={`px-2.5 py-1 rounded-lg text-xs font-bold transition ${
                           volumeFilter === tab.id
-                            ? 'bg-indigo-600 text-white shadow-sm'
-                            : 'text-indigo-900 hover:bg-white/60'
+                            ? 'bg-blue-700 text-white shadow-sm'
+                            : 'text-blue-900 hover:bg-white/60'
                         }`}
                       >
                         {tab.label}
@@ -556,8 +560,8 @@ export function App() {
                         onClick={() => handleSelectTopic(topic.id)}
                         className={`text-left px-3 py-2.5 rounded-xl border-2 transition-all flex flex-col justify-between gap-1 ${
                           isSelected
-                            ? 'border-indigo-600 bg-indigo-50 shadow-sm ring-1 ring-indigo-600/20'
-                            : 'border-slate-200 bg-white hover:bg-indigo-50/40 hover:border-indigo-300'
+                            ? 'border-blue-700 bg-blue-50/70 shadow-sm ring-1 ring-blue-700/20'
+                            : 'border-slate-200 bg-white hover:bg-blue-50/30 hover:border-blue-300'
                         }`}
                       >
                         <div className="flex items-center justify-between gap-2 w-full">
@@ -565,9 +569,9 @@ export function App() {
                             <span
                               className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[11px] font-bold shrink-0 ${
                                 isSelected
-                                  ? 'bg-indigo-600 text-white'
+                                  ? 'bg-blue-700 text-white'
                                   : topic.volumeId === 'vol1'
-                                  ? 'bg-indigo-100 text-indigo-800'
+                                  ? 'bg-blue-100 text-blue-900'
                                   : 'bg-emerald-100 text-emerald-800'
                               }`}
                             >
@@ -583,14 +587,14 @@ export function App() {
                             <span className="text-[10px] font-semibold text-slate-400 hidden md:inline">
                               {topic.volumeId === 'vol1'
                                 ? selectedSubject === 'magyar'
-                                  ? 'I. rész'
+                                   ? 'I. rész'
                                   : 'I. kötet'
                                 : selectedSubject === 'magyar'
                                 ? 'II. rész'
                                 : 'II. kötet'}
                             </span>
                             {isSelected && (
-                              <span className="w-5 h-5 rounded-full bg-indigo-600 text-white flex items-center justify-center">
+                              <span className="w-5 h-5 rounded-full bg-blue-700 text-white flex items-center justify-center">
                                 <Check className="w-3 h-3" />
                               </span>
                             )}
@@ -658,7 +662,7 @@ export function App() {
                     type="checkbox"
                     checked={allowAnswerEdit}
                     onChange={(e) => setAllowAnswerEdit(e.target.checked)}
-                    className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                    className="rounded border-slate-300 text-slate-900 focus:ring-slate-800"
                   />
                   <span>Beírt válasz javítható</span>
                 </label>
@@ -668,7 +672,7 @@ export function App() {
                     type="checkbox"
                     checked={includePrintKey}
                     onChange={(e) => setIncludePrintKey(e.target.checked)}
-                    className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                    className="rounded border-slate-300 text-slate-900 focus:ring-slate-800"
                   />
                   <span>Megoldókulcs nyomtatása</span>
                 </label>
@@ -676,19 +680,19 @@ export function App() {
             </div>
 
             {/* Right: Percentage Evaluation Box */}
-            <div className="flex items-center gap-4 bg-white/90 border border-indigo-200/90 px-4 py-2.5 rounded-xl shadow-sm">
+            <div className="flex items-center gap-4 bg-white/90 border border-slate-300 px-4 py-2.5 rounded-xl shadow-sm">
               <div className="flex items-center gap-2">
                 <Trophy className="w-6 h-6 text-amber-500 shrink-0" />
                 <div>
                   <div className="flex items-baseline gap-2">
-                    <span className="text-xl font-extrabold text-indigo-950 font-mono">
+                    <span className="text-xl font-extrabold text-slate-950 font-mono">
                       {stats.percentage}%
                     </span>
                     <span className="text-xs font-semibold text-slate-600">
                       ({stats.earnedScore} / {stats.submittedCount > 0 ? stats.submittedMaxScore : stats.totalMaxScore} pont • {stats.submittedCount}/{exercises.length} feladat)
                     </span>
                   </div>
-                  <p className="text-xs text-indigo-900 font-medium">
+                  <p className="text-xs text-slate-700 font-medium">
                     {stats.evaluationEmoji} {stats.evaluationText}
                   </p>
                 </div>
@@ -742,10 +746,10 @@ export function App() {
         </section>
 
         {/* Bottom Evaluation Card */}
-        <section className="bg-gradient-to-br from-indigo-100/90 via-indigo-50 to-violet-100/80 rounded-2xl border-2 border-indigo-300 p-6 shadow-md print:hidden">
+        <section className="bg-gradient-to-br from-blue-100/80 via-blue-50/50 to-indigo-100/70 rounded-2xl border-2 border-blue-200 p-6 shadow-md print:hidden">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
             <div>
-              <h3 className="text-lg font-extrabold text-indigo-950">
+              <h3 className="text-lg font-extrabold text-blue-950">
                 Értékeld a munkádat! – Összesített eredmény
               </h3>
               <p className="text-xs text-slate-600">
@@ -762,7 +766,7 @@ export function App() {
           </div>
 
           {/* Progress Bar */}
-          <div className="w-full h-4 bg-white/90 rounded-full overflow-hidden mb-5 border border-indigo-200/80 shadow-inner">
+          <div className="w-full h-4 bg-white/90 rounded-full overflow-hidden mb-5 border border-blue-200 shadow-inner">
             <div
               className={`h-full transition-all duration-500 ${
                 stats.percentage >= 85
@@ -812,12 +816,12 @@ export function App() {
                 key={idx}
                 className={`p-3.5 rounded-xl border-2 transition ${
                   tier.active
-                    ? 'border-indigo-600 bg-white shadow-md scale-[1.02]'
-                    : 'border-indigo-200/70 bg-white/80 opacity-85'
+                    ? 'border-blue-700 bg-white shadow-md scale-[1.02]'
+                    : 'border-blue-200/70 bg-white/80 opacity-85'
                 }`}
               >
                 <div className="text-2xl mb-1">{tier.emoji}</div>
-                <div className="text-xs font-extrabold text-indigo-700 mb-1">
+                <div className="text-xs font-extrabold text-blue-950 mb-1">
                   {tier.range}
                 </div>
                 <div className="text-xs font-medium text-slate-700">
@@ -939,7 +943,7 @@ export function App() {
             Kapcsolat:{' '}
             <a
               href="mailto:szabobalint@outlook.com"
-              className="text-indigo-600 hover:text-indigo-800 hover:underline transition"
+              className="text-slate-800 font-semibold hover:text-slate-950 hover:underline transition"
             >
               szabobalint@outlook.com
             </a>
