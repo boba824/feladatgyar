@@ -622,7 +622,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
                   <div className="hidden print:block h-8 border-b border-slate-400" />
                 </div>
 
-                <div className="text-center py-2 bg-indigo-600 text-white rounded-xl font-mono text-xl font-extrabold shadow-sm print:bg-slate-100 print:text-slate-900 print:border print:border-slate-400">
+                <div className="text-center py-2 bg-blue-700 text-white rounded-xl font-mono text-xl font-extrabold shadow-sm print:bg-slate-100 print:text-slate-900 print:border print:border-slate-400">
                   {exercise.item.number}
                 </div>
 
@@ -1042,7 +1042,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
 
           return (
             <div className="space-y-3 bg-slate-50 p-3.5 rounded-xl border border-slate-200">
-              <div className="inline-block px-3 py-1 rounded-lg bg-indigo-600 text-white text-xs font-extrabold shadow-sm print:bg-slate-100 print:text-slate-900 print:border print:border-slate-400">
+              <div className="inline-block px-3 py-1 rounded-lg bg-blue-700 text-white text-xs font-extrabold shadow-sm print:bg-slate-100 print:text-slate-900 print:border print:border-slate-400">
                 {exercise.headerBadge}
               </div>
 
@@ -1118,7 +1118,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
           type="button"
           disabled={isLocked}
           onClick={evaluateCurrentExercise}
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 text-white hover:bg-indigo-700 active:scale-95 transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 whitespace-nowrap shrink-0"
+          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-blue-700 text-white hover:bg-blue-800 active:scale-95 transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 whitespace-nowrap shrink-0"
         >
           <CheckCircle2 className="w-4 h-4" /> {isLocked ? 'Ellenőrizve' : 'Azonnali ellenőrzés'}
         </button>
