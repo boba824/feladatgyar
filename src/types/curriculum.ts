@@ -43,7 +43,10 @@ export type ExerciseKind =
   | 'negative-numbers'       // Negatív számok (hőmérséklet-változás, relációk, adósság)
   | 'word-problem'           // Szöveges feladat, geometria, pénzügyek vagy nyitott mondat
   | 'roman-numerals'         // Római számok és alapműveletek
-  | 'fractions';             // Törtszámok (egész törtrésze, pl. 2400 Ft 3 negyede, 200 cm 4 ötöde)
+  | 'fractions'              // Törtszámok (egész törtrésze, pl. 2400 Ft 3 negyede, 200 cm 4 ötöde)
+  | 'hu-choice'              // Magyar nyelv: feleletválasztós (mondatfajta, szófaj, helyesírás, szövegértés)
+  | 'hu-text-input'          // Magyar nyelv: kiegészítendő szó / toldalék / helyesírási alak
+  | 'hu-triad';              // Magyar nyelv: 3-as csoportosító / ragozó / fokozó táblázat (3 pont)
 
 export interface WrittenArithmeticExercise {
   id: string;
@@ -174,6 +177,58 @@ export interface FractionsExercise {
   hint: string;
 }
 
+export interface HungarianChoiceExercise {
+  id: string;
+  kind: 'hu-choice';
+  topicId: string;
+  title: string;
+  instruction: string;
+  promptText: string;
+  contextNote?: string;
+  options: string[];
+  correctOption: string;
+  explanation: string;
+  hint: string;
+}
+
+export interface HungarianTextInputExercise {
+  id: string;
+  kind: 'hu-text-input';
+  topicId: string;
+  title: string;
+  instruction: string;
+  beforeText: string;
+  afterText?: string;
+  targetLabel?: string;
+  placeholder?: string;
+  exactAnswer: string;
+  acceptedAnswers?: string[];
+  caseSensitive?: boolean;
+  explanation?: string;
+  hint: string;
+}
+
+export interface HungarianTriadField {
+  label: string;
+  prefix?: string;
+  suffix?: string;
+  placeholder?: string;
+  exactAnswer: string;
+  acceptedAnswers?: string[];
+  caseSensitive?: boolean;
+}
+
+export interface HungarianTriadExercise {
+  id: string;
+  kind: 'hu-triad';
+  topicId: string;
+  title: string;
+  instruction: string;
+  headerBadge: string;
+  fields: [HungarianTriadField, HungarianTriadField, HungarianTriadField];
+  hint: string;
+}
+
 export type Exercise =
   | WrittenArithmeticExercise
   | WrittenDivisionExercise
@@ -183,7 +238,10 @@ export type Exercise =
   | NegativeNumbersExercise
   | WordProblemExercise
   | RomanNumeralsExercise
-  | FractionsExercise;
+  | FractionsExercise
+  | HungarianChoiceExercise
+  | HungarianTextInputExercise
+  | HungarianTriadExercise;
 
 export interface ExerciseAttemptState {
   exerciseId: string;
@@ -193,3 +251,4 @@ export interface ExerciseAttemptState {
   maxScore: number;   // possible points
   userValues: Record<string, string>;
 }
+

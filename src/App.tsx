@@ -32,13 +32,25 @@ import {
   VolumeFilter,
 } from './types/curriculum';
 import { generateWorksheet } from './generators/mathGrade4';
-import { ExerciseCard } from './components/ExerciseCard';
+import { generateMathGrade3Worksheet } from './generators/mathGrade3';
+import { generateHungarianWorksheet } from './generators/hungarianGrade4';
+import { checkHungarianAnswer, ExerciseCard } from './components/ExerciseCard';
 
 declare const __APP_VERSION__: string;
 
+function generateAnyWorksheet(topicId: string, count: number): Exercise[] {
+  if (topicId.startsWith('magyar-')) {
+    return generateHungarianWorksheet(topicId, count);
+  }
+  if (topicId.startsWith('matek-3-')) {
+    return generateMathGrade3Worksheet(topicId, count);
+  }
+  return generateWorksheet(topicId, count);
+}
+
 function getMaxScoreForExercise(ex: Exercise): number {
   if (ex.kind === 'written-arithmetic' || ex.kind === 'written-division') return 2;
-  if (ex.kind === 'rounding-neighbors') return 3;
+  if (ex.kind === 'rounding-neighbors' || ex.kind === 'hu-triad') return 3;
   return 1;
 }
 
@@ -97,6 +109,34 @@ function evaluateSingleAttempt(ex: Exercise, userValues: Record<string, string>)
       const ok = raw !== '' && raw === expected;
       return { isCorrect: ok, score: ok ? 1 : 0, maxScore: 1 };
     }
+    case 'hu-choice': {
+      const selected = userValues.answer || '';
+      const ok = selected !== '' && selected === ex.correctOption;
+      return { isCorrect: ok, score: ok ? 1 : 0, maxScore: 1 };
+    }
+    case 'hu-text-input': {
+      const ok = checkHungarianAnswer(
+        userValues.answer || '',
+        ex.exactAnswer,
+        ex.acceptedAnswers,
+        ex.caseSensitive
+      );
+      return { isCorrect: ok, score: ok ? 1 : 0, maxScore: 1 };
+    }
+    case 'hu-triad': {
+      const f0 = ex.fields[0];
+      const f1 = ex.fields[1];
+      const f2 = ex.fields[2];
+      const ok0 = checkHungarianAnswer(userValues.f0 || '', f0.exactAnswer, f0.acceptedAnswers, f0.caseSensitive);
+      const ok1 = checkHungarianAnswer(userValues.f1 || '', f1.exactAnswer, f1.acceptedAnswers, f1.caseSensitive);
+      const ok2 = checkHungarianAnswer(userValues.f2 || '', f2.exactAnswer, f2.acceptedAnswers, f2.caseSensitive);
+      const score = (ok0 ? 1 : 0) + (ok1 ? 1 : 0) + (ok2 ? 1 : 0);
+      return {
+        isCorrect: ok0 && ok1 && ok2,
+        score,
+        maxScore: 3,
+      };
+    }
     default: {
       const raw = normalizeNumberInput(userValues.answer || '');
       const ok = raw !== '' && Number(raw) === ex.exactResult;
@@ -116,7 +156,7 @@ export function App() {
   const [includePrintKey, setIncludePrintKey] = useState<boolean>(true);
 
   const [exercises, setExercises] = useState<Exercise[]>(() =>
-    generateWorksheet('matek-4-1000-ismetles', 6)
+    generateAnyWorksheet('matek-4-1000-ismetles', 6)
   );
 
   const [attempts, setAttempts] = useState<Record<string, ExerciseAttemptState>>(() => {
@@ -153,7 +193,7 @@ export function App() {
   const summaryBoxRef = useRef<HTMLElement | null>(null);
 
   const handleRegenerate = (topicId = selectedTopicId, count = exerciseCount) => {
-    const nextExercises = generateWorksheet(topicId, count);
+    const nextExercises = generateAnyWorksheet(topicId, count);
     setExercises(nextExercises);
     const nextAttempts: Record<string, ExerciseAttemptState> = {};
     for (const ex of nextExercises) {
@@ -167,6 +207,40 @@ export function App() {
       };
     }
     setAttempts(nextAttempts);
+  };
+
+  const handleSelectSubject = (subjId: SubjectId) => {
+    if (subjId === selectedSubject) return;
+    setSelectedSubject(subjId);
+    setVolumeFilter('all');
+    let firstTopic = TOPICS.find((t) => t.subjectId === subjId && t.grade === selectedGrade);
+    if (!firstTopic) {
+      firstTopic = TOPICS.find((t) => t.subjectId === subjId);
+      if (firstTopic) {
+        setSelectedGrade(firstTopic.grade);
+      }
+    }
+    if (firstTopic) {
+      setSelectedTopicId(firstTopic.id);
+      handleRegenerate(firstTopic.id, exerciseCount);
+    }
+  };
+
+  const handleSelectGrade = (gradeId: GradeId) => {
+    if (gradeId === selectedGrade) return;
+    setSelectedGrade(gradeId);
+    setVolumeFilter('all');
+    let firstTopic = TOPICS.find((t) => t.subjectId === selectedSubject && t.grade === gradeId);
+    if (!firstTopic) {
+      firstTopic = TOPICS.find((t) => t.grade === gradeId);
+      if (firstTopic) {
+        setSelectedSubject(firstTopic.subjectId);
+      }
+    }
+    if (firstTopic) {
+      setSelectedTopicId(firstTopic.id);
+      handleRegenerate(firstTopic.id, exerciseCount);
+    }
   };
 
   const handleSelectTopic = (topicId: string) => {
@@ -303,7 +377,11 @@ export function App() {
         <div className="max-w-6xl mx-auto px-4 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="w-11 h-11 rounded-2xl bg-white/15 backdrop-blur flex items-center justify-center shadow-inner">
-              <Calculator className="w-6 h-6 text-amber-300" />
+              {selectedSubject === 'magyar' ? (
+                <BookOpen className="w-6 h-6 text-amber-300" />
+              ) : (
+                <Calculator className="w-6 h-6 text-amber-300" />
+              )}
             </div>
             <div>
               <div className="flex items-center gap-2">
@@ -326,7 +404,7 @@ export function App() {
                   key={subj.id}
                   type="button"
                   disabled={!subj.available}
-                  onClick={() => setSelectedSubject(subj.id)}
+                  onClick={() => handleSelectSubject(subj.id)}
                   className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition ${
                     active
                       ? 'bg-white text-indigo-800 shadow-sm'
@@ -361,7 +439,7 @@ export function App() {
                   key={g.grade}
                   type="button"
                   disabled={!g.available}
-                  onClick={() => setSelectedGrade(g.grade)}
+                  onClick={() => handleSelectGrade(g.grade)}
                   className={`px-2 sm:px-3 py-1 rounded-lg text-[11px] sm:text-xs font-bold shrink-0 transition ${
                     isSelected
                       ? 'bg-amber-400 text-slate-950 shadow-sm'
@@ -434,15 +512,22 @@ export function App() {
               <div className="mt-3.5 pt-3.5 border-t border-indigo-200/80 bg-white/90 rounded-2xl p-3 border shadow-inner">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
                   <span className="text-xs font-bold uppercase tracking-wider text-indigo-900">
-                    Válassz fejezetet ({selectedGrade}. osztály – Matematika)
+                    Válassz fejezetet ({selectedGrade}. osztály –{' '}
+                    {selectedSubject === 'magyar' ? 'Magyar nyelv' : 'Matematika'})
                   </span>
 
                   {/* Volume Filter Pills */}
                   <div className="inline-flex bg-indigo-100/80 p-1 rounded-xl self-start">
                     {[
                       { id: 'all' as VolumeFilter, label: 'Mind (1–12.)' },
-                      { id: 'vol1' as VolumeFilter, label: 'I. kötet (1–6.)' },
-                      { id: 'vol2' as VolumeFilter, label: 'II. kötet (7–12.)' },
+                      {
+                        id: 'vol1' as VolumeFilter,
+                        label: selectedSubject === 'magyar' ? 'I. rész (1–6.)' : 'I. kötet (1–6.)',
+                      },
+                      {
+                        id: 'vol2' as VolumeFilter,
+                        label: selectedSubject === 'magyar' ? 'II. rész (7–12.)' : 'II. kötet (7–12.)',
+                      },
                     ].map((tab) => (
                       <button
                         key={tab.id}
@@ -496,7 +581,13 @@ export function App() {
 
                           <div className="flex items-center gap-1.5 shrink-0">
                             <span className="text-[10px] font-semibold text-slate-400 hidden md:inline">
-                              {topic.volumeId === 'vol1' ? 'I. kötet' : 'II. kötet'}
+                              {topic.volumeId === 'vol1'
+                                ? selectedSubject === 'magyar'
+                                  ? 'I. rész'
+                                  : 'I. kötet'
+                                : selectedSubject === 'magyar'
+                                ? 'II. rész'
+                                : 'II. kötet'}
                             </span>
                             {isSelected && (
                               <span className="w-5 h-5 rounded-full bg-indigo-600 text-white flex items-center justify-center">
@@ -611,7 +702,7 @@ export function App() {
           <div className="flex justify-between items-start">
             <div>
               <h1 className="text-xl font-bold">
-                Matematika 4. osztály – Gyakorló feladatlap (NAT 2020)
+                {selectedSubject === 'magyar' ? 'Magyar nyelv' : 'Matematika'} {selectedGrade}. osztály – Gyakorló feladatlap (NAT 2020)
               </h1>
               <p className="text-sm text-slate-700 font-semibold mt-0.5">
                 Témakör: {activeTopic?.badge} – {activeTopic?.title} ({activeTopic?.volume})
@@ -807,6 +898,23 @@ export function App() {
                         {ex.exactResult} {ex.unit}
                       </strong>{' '}
                       ({ex.solutionSteps})
+                    </span>
+                  )}
+                  {ex.kind === 'hu-choice' && (
+                    <span>
+                      <strong>{ex.correctOption}</strong>
+                    </span>
+                  )}
+                  {ex.kind === 'hu-text-input' && (
+                    <span>
+                      <strong>{ex.exactAnswer}</strong>
+                    </span>
+                  )}
+                  {ex.kind === 'hu-triad' && (
+                    <span>
+                      1) <strong>{ex.fields[0].exactAnswer}</strong> | 2){' '}
+                      <strong>{ex.fields[1].exactAnswer}</strong> | 3){' '}
+                      <strong>{ex.fields[2].exactAnswer}</strong>
                     </span>
                   )}
                 </div>
