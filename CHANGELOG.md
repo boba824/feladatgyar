@@ -4,6 +4,41 @@ Minden lényeges változás ebben a fájlban kerül dokumentálásra.
 
 A formátum a [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/) ajánlásain alapul, a projekt pedig a [Szemantikus Verziózást (SemVer)](https://semver.org/lang/hu/) követi (`MAJOR.MINOR.PATCH`).
 
+## [1.3.0] - 2026-11-13
+
+### Hozzáadva (Added)
+- **Matematika 1. osztály – I. és II. kötet (1–12. fejezet):** Aktiválva az **1. osztály** évfolyamválasztó gomb, és elkészült a teljes 1. osztályos feladatgenerátor az Oktatási Hivatal NAT 2020 (`OH-MAT01MA/I` és `OH-MAT01MA/II`) munkafüzetei alapján:
+  1. Válogatások, összehasonlítások és tájékozódás
+  2. Számok és számolás 0-tól 5-ig
+  3. Számolás 6-ig és 7-ig, páros-páratlan számok és számszomszédok
+  4. Számolás 8-ig és 9-ig, nyitott mondatok és sorszámnevek
+  5. A tíz, számolás 0-tól 10-ig és szöveges feladatok
+  6. Megálló – Félévi ismétlés 0-tól 10-ig
+  7. Vonalak, síkidomok, testek és mérések (`dm`, `kg`, `dl`, `l`)
+  8. Számok 20-ig, számolás 11–12-ig és időmérés
+  9. Számolás 13-ig és 14-ig (tízesátlépés)
+  10. Számolás 15-ig és 16-ig
+  11. Számolás 17-ig, 18-ig és 19-ig
+  12. A húsz, számolás 20-ig, év végi ismétlés és játék a tükörrel
+- **Matematika 2. osztály – I. és II. kötet (1–12. fejezet):** Aktiválva a **2. osztály** évfolyamválasztó gomb, és elkészült a teljes 2. osztályos feladatgenerátor az Oktatási Hivatal NAT 2020 (`OH-MAT02MA/I` és `OH-MAT02MA/II`) munkafüzetei alapján:
+  1. Számok, összeadás és kivonás 0-tól 20-ig
+  2. A szorzás, az osztás, 2-es szorzótábla és római számok (`I`–`XX`)
+  3. Kitekintés 100-ig, kerek tízesek és 10-es szorzótábla
+  4. Számolás 30-ig, 3-as szorzótábla (maradékos osztással) és időmérés
+  5. Számolás 40-ig és 4-es szorzótábla
+  6. Számolás 50-ig és 5-ös szorzótábla
+  7. Geometria: testek, síkidomok, vonalak és szimmetria
+  8. Számolás 60-ig, 6-os szorzótábla és időmérés (`1 óra = 60 perc`)
+  9. Számolás 70-ig, 7-es szorzótábla és naptár (`1 hét = 7 nap`)
+  10. Számolás 80-ig és 90-ig, 8-as és 9-es szorzótábla
+  11. Számok, műveletek 100-ig és római számok
+  12. Mérések (hosszúság, tömeg, űrtartalom) és év végi ismétlés
+
+### Módosítva (Changed)
+- **Megjelenés (UI/UX):** A korábbi lilás-indigókék színek helyett világosabb, letisztult tengerészkék (navy blue) színvilág és átmenetek bevezetése a fejlécben, a vezérlősávban, a gombokon és a kiértékelő blokkokon.
+
+---
+
 ## [1.2.0] - 2026-11-13
 
 ### Hozzáadva (Added)

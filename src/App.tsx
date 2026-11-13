@@ -34,6 +34,7 @@ import {
 import { generateWorksheet } from './generators/mathGrade4';
 import { generateMathGrade3Worksheet } from './generators/mathGrade3';
 import { generateMathGrade2Worksheet } from './generators/mathGrade2';
+import { generateMathGrade1Worksheet } from './generators/mathGrade1';
 import { generateHungarianWorksheet } from './generators/hungarianGrade4';
 import { checkHungarianAnswer, ExerciseCard } from './components/ExerciseCard';
 
@@ -48,6 +49,9 @@ function generateAnyWorksheet(topicId: string, count: number): Exercise[] {
   }
   if (topicId.startsWith('matek-2-')) {
     return generateMathGrade2Worksheet(topicId, count);
+  }
+  if (topicId.startsWith('matek-1-')) {
+    return generateMathGrade1Worksheet(topicId, count);
   }
   return generateWorksheet(topicId, count);
 }
