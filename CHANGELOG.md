@@ -4,6 +4,25 @@ Minden lényeges változás ebben a fájlban kerül dokumentálásra.
 
 A formátum a [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/) ajánlásain alapul, a projekt pedig a [Szemantikus Verziózást (SemVer)](https://semver.org/lang/hu/) követi (`MAJOR.MINOR.PATCH`).
 
+## [1.2.0] - 2026-11-13
+
+### Hozzáadva (Added)
+- **Matematika 3. osztály – I. és II. kötet (1–12. fejezet):** Aktiválva a **3. osztály** évfolyamválasztó gomb, és elkészült a teljes 3. osztályos feladatgenerátor az Oktatási Hivatal NAT 2020 (`OH-MAT03-I` és `OH-MAT03-II`) munkafüzetei alapján:
+  1. Számolás 0-tól 100-ig, maradékos osztás és műveleti sorrend
+  2. Római számok (`I`-től `C`-ig) és I. tudáspróba
+  3. Számok és műveletek 200-ig (helyi értékek, kerekítés)
+  4. Tömeg (`dkg, kg, fél kg`) és űrtartalom (`cl, dl, l`) mérése
+  5. Számok, kerekítés és műveletek 500-ig
+  6. Írásbeli összeadás becsléssel (500-ig)
+  7. Írásbeli kivonás becsléssel (500-ig)
+  8. Negatív számok (hőmérséklet), testek és síkidomok
+  9. Számok és műveletek 1000-ig
+  10. Írásbeli szorzás egyjegyű szorzóval
+  11. Egységtörtek, időmérés, hosszúságmérés, kerület és terület
+  12. Év végi ismétlés és mindennapi pénzügyek
+
+---
+
 ## [1.1.1] - 2026-11-11
 
 ### Módosítva (Changed)

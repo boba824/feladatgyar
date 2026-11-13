@@ -25,6 +25,22 @@ function normalizeNumberInput(str: string): string {
   return str.replace(/\s+/g, '').replace(',', '.').trim();
 }
 
+export function checkHungarianAnswer(
+  rawInput: string,
+  exactAnswer: string,
+  acceptedAnswers?: string[],
+  caseSensitive?: boolean
+): boolean {
+  const clean = (s: string) => {
+    const trimmed = s.trim().replace(/\s+/g, ' ');
+    return caseSensitive ? trimmed : trimmed.toLowerCase();
+  };
+  const user = clean(rawInput || '');
+  if (!user) return false;
+  const targets = [exactAnswer, ...(acceptedAnswers || [])].map(clean);
+  return targets.includes(user);
+}
+
 const WrittenGridDisplay: React.FC<{
   ex: WrittenArithmeticExercise;
   userExact: string;
@@ -272,6 +288,54 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
           isCorrect: ok,
           score: ok ? 1 : 0,
           maxScore: 1,
+        });
+        break;
+      }
+
+      case 'hu-choice': {
+        const selected = vals.answer || '';
+        const ok = selected !== '' && selected === exercise.correctOption;
+        onUpdateAttempt({
+          ...attempt,
+          submitted: true,
+          isCorrect: ok,
+          score: ok ? 1 : 0,
+          maxScore: 1,
+        });
+        break;
+      }
+
+      case 'hu-text-input': {
+        const ok = checkHungarianAnswer(
+          vals.answer || '',
+          exercise.exactAnswer,
+          exercise.acceptedAnswers,
+          exercise.caseSensitive
+        );
+        onUpdateAttempt({
+          ...attempt,
+          submitted: true,
+          isCorrect: ok,
+          score: ok ? 1 : 0,
+          maxScore: 1,
+        });
+        break;
+      }
+
+      case 'hu-triad': {
+        const f0 = exercise.fields[0];
+        const f1 = exercise.fields[1];
+        const f2 = exercise.fields[2];
+        const ok0 = checkHungarianAnswer(vals.f0 || '', f0.exactAnswer, f0.acceptedAnswers, f0.caseSensitive);
+        const ok1 = checkHungarianAnswer(vals.f1 || '', f1.exactAnswer, f1.acceptedAnswers, f1.caseSensitive);
+        const ok2 = checkHungarianAnswer(vals.f2 || '', f2.exactAnswer, f2.acceptedAnswers, f2.caseSensitive);
+        const score = (ok0 ? 1 : 0) + (ok1 ? 1 : 0) + (ok2 ? 1 : 0);
+        onUpdateAttempt({
+          ...attempt,
+          submitted: true,
+          isCorrect: ok0 && ok1 && ok2,
+          score,
+          maxScore: 3,
         });
         break;
       }
@@ -835,6 +899,208 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({
             </div>
           </div>
         )}
+
+        {exercise.kind === 'hu-choice' && (() => {
+          const selected = attempt.userValues.answer || '';
+          return (
+            <div className="space-y-3 bg-indigo-50/40 p-4 rounded-xl border border-indigo-200">
+              <div className="bg-white px-3.5 py-2.5 rounded-xl border border-indigo-100 shadow-sm">
+                <p className="text-sm sm:text-base font-bold text-slate-800 leading-relaxed">
+                  {exercise.promptText}
+                </p>
+                {exercise.contextNote && (
+                  <p className="text-xs text-slate-500 mt-1">{exercise.contextNote}</p>
+                )}
+              </div>
+
+              {/* Interactive Choice Buttons */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 print:hidden">
+                {exercise.options.map((opt, oIdx) => {
+                  const isSelected = selected === opt;
+                  const isCorrectOption = opt === exercise.correctOption;
+                  let btnStyle =
+                    'border-slate-300 bg-white text-slate-800 hover:border-indigo-400 hover:bg-indigo-50/40';
+
+                  if (attempt.submitted) {
+                    if (isSelected && isCorrectOption) {
+                      btnStyle = 'border-emerald-600 bg-emerald-50 text-emerald-950 ring-2 ring-emerald-500/20';
+                    } else if (isSelected && !isCorrectOption) {
+                      btnStyle = 'border-rose-500 bg-rose-50 text-rose-950 ring-2 ring-rose-500/20';
+                    } else if (showCorrectAnswer && isCorrectOption) {
+                      btnStyle = 'border-emerald-500 bg-emerald-50/70 text-emerald-900';
+                    } else {
+                      btnStyle = 'border-slate-200 bg-slate-50 text-slate-500 opacity-75';
+                    }
+                  } else if (isSelected) {
+                    btnStyle = 'border-indigo-600 bg-indigo-50 text-indigo-950 ring-2 ring-indigo-600/20';
+                  }
+
+                  const optionLetters = ['A', 'B', 'C', 'D', 'E'];
+
+                  return (
+                    <button
+                      key={oIdx}
+                      type="button"
+                      disabled={isLocked}
+                      onClick={() => setFieldValue('answer', opt)}
+                      className={`text-left px-3.5 py-2.5 rounded-xl border-2 text-xs sm:text-sm font-semibold transition flex items-start gap-2.5 disabled:cursor-not-allowed ${btnStyle}`}
+                    >
+                      <span
+                        className={`w-6 h-6 rounded-lg text-xs font-extrabold flex items-center justify-center shrink-0 mt-0.5 ${
+                          isSelected
+                            ? attempt.submitted
+                              ? isCorrectOption
+                                ? 'bg-emerald-600 text-white'
+                                : 'bg-rose-600 text-white'
+                              : 'bg-indigo-600 text-white'
+                            : 'bg-slate-100 text-slate-700'
+                        }`}
+                      >
+                        {optionLetters[oIdx] || oIdx + 1}
+                      </span>
+                      <span className="leading-snug">{opt}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Printable Checkboxes */}
+              <div className="hidden print:grid grid-cols-2 gap-2 pt-1 text-xs">
+                {exercise.options.map((opt, oIdx) => (
+                  <div key={oIdx} className="flex items-start gap-2">
+                    <span className="inline-block w-4 h-4 border border-slate-500 rounded-sm shrink-0 mt-0.5" />
+                    <span>{opt}</span>
+                  </div>
+                ))}
+              </div>
+
+              {attempt.submitted && (
+                <p
+                  className={`text-xs font-medium print:hidden ${
+                    attempt.isCorrect ? 'text-emerald-800' : 'text-rose-700'
+                  }`}
+                >
+                  { !attempt.isCorrect && (
+                    <span>
+                      Helyes válasz: <strong>{exercise.correctOption}</strong>.{' '}
+                    </span>
+                  )}
+                  <span>{exercise.explanation}</span>
+                </p>
+              )}
+            </div>
+          );
+        })()}
+
+        {exercise.kind === 'hu-text-input' && (
+          <div className="space-y-3 bg-amber-50/40 p-4 rounded-xl border border-amber-200">
+            <p className="text-sm sm:text-base font-semibold text-slate-800 leading-relaxed bg-white px-3.5 py-2.5 rounded-xl border border-amber-100 shadow-sm">
+              {exercise.beforeText}
+            </p>
+            <div className="flex flex-wrap items-center gap-2.5">
+              {exercise.targetLabel && (
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-600">
+                  {exercise.targetLabel}
+                </span>
+              )}
+              <input
+                type="text"
+                disabled={isLocked}
+                value={attempt.userValues.answer || ''}
+                onChange={(e) => setFieldValue('answer', e.target.value)}
+                placeholder={exercise.placeholder || 'Írd be a választ...'}
+                className={`w-56 px-3 py-1.5 text-base font-bold placeholder:font-sans placeholder:text-xs placeholder:font-normal rounded-lg border-2 outline-none print:hidden disabled:cursor-not-allowed ${
+                  attempt.submitted
+                    ? attempt.isCorrect
+                      ? 'border-emerald-500 bg-emerald-50 text-emerald-900'
+                      : 'border-rose-500 bg-rose-50 text-rose-900'
+                    : 'border-slate-300 focus:border-indigo-600 bg-white'
+                }`}
+              />
+              <span className="hidden print:inline-block border-b border-slate-400 w-48 h-6" />
+              {exercise.afterText && (
+                <span className="text-sm font-semibold text-slate-700">{exercise.afterText}</span>
+              )}
+            </div>
+            {showCorrectAnswer && !attempt.isCorrect && (
+              <p className="text-xs text-rose-600 font-semibold print:hidden">
+                Helyes válasz: <strong>{exercise.exactAnswer}</strong>
+                {exercise.explanation ? ` — ${exercise.explanation}` : ''}
+              </p>
+            )}
+          </div>
+        )}
+
+        {exercise.kind === 'hu-triad' && (() => {
+          const f0 = exercise.fields[0];
+          const f1 = exercise.fields[1];
+          const f2 = exercise.fields[2];
+          const ok0 = checkHungarianAnswer(attempt.userValues.f0 || '', f0.exactAnswer, f0.acceptedAnswers, f0.caseSensitive);
+          const ok1 = checkHungarianAnswer(attempt.userValues.f1 || '', f1.exactAnswer, f1.acceptedAnswers, f1.caseSensitive);
+          const ok2 = checkHungarianAnswer(attempt.userValues.f2 || '', f2.exactAnswer, f2.acceptedAnswers, f2.caseSensitive);
+          const okList = [ok0, ok1, ok2];
+
+          return (
+            <div className="space-y-3 bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+              <div className="inline-block px-3 py-1 rounded-lg bg-indigo-600 text-white text-xs font-extrabold shadow-sm print:bg-slate-100 print:text-slate-900 print:border print:border-slate-400">
+                {exercise.headerBadge}
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {exercise.fields.map((field, fIdx) => {
+                  const key = `f${fIdx}`;
+                  const isFieldOk = okList[fIdx];
+                  const val = attempt.userValues[key] || '';
+
+                  return (
+                    <div
+                      key={key}
+                      className="bg-white p-3 rounded-xl border border-slate-200 flex flex-col justify-between gap-2 shadow-sm"
+                    >
+                      <label className="block text-xs font-bold text-slate-700 leading-snug">
+                        {fIdx + 1}) {field.label}
+                      </label>
+                      <div className="flex items-center gap-1.5">
+                        {field.prefix && (
+                          <span className="text-xs font-semibold text-slate-500 shrink-0">
+                            {field.prefix}
+                          </span>
+                        )}
+                        <input
+                          type="text"
+                          disabled={attempt.submitted && (!allowAnswerEdit || isFieldOk)}
+                          value={val}
+                          onChange={(e) => setFieldValue(key, e.target.value)}
+                          placeholder={field.placeholder || 'Válasz...'}
+                          className={`w-full px-2.5 py-1.5 text-sm font-bold placeholder:font-sans placeholder:text-xs placeholder:font-normal rounded-lg border-2 outline-none print:hidden disabled:cursor-not-allowed ${
+                            attempt.submitted
+                              ? isFieldOk
+                                ? 'border-emerald-500 bg-emerald-50 text-emerald-900'
+                                : 'border-rose-500 bg-rose-50 text-rose-900'
+                              : 'border-slate-300 focus:border-indigo-600 bg-white'
+                          }`}
+                        />
+                        {field.suffix && (
+                          <span className="text-xs font-semibold text-slate-500 shrink-0">
+                            {field.suffix}
+                          </span>
+                        )}
+                        <div className="hidden print:block w-full h-7 border-b border-slate-400" />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {showCorrectAnswer && !attempt.isCorrect && (
+                <p className="text-xs text-rose-600 font-medium print:hidden">
+                  Helyes megoldások: 1) <strong>{f0.exactAnswer}</strong> | 2){' '}
+                  <strong>{f1.exactAnswer}</strong> | 3) <strong>{f2.exactAnswer}</strong>
+                </p>
+              )}
+            </div>
+          );
+        })()}
       </div>
 
       {/* Card Footer with immediate check button (hidden on print) */}
