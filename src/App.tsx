@@ -40,7 +40,7 @@ import { checkHungarianAnswer, ExerciseCard } from './components/ExerciseCard';
 
 declare const __APP_VERSION__: string;
 
-function generateAnyWorksheet(topicId: string, count: number): Exercise[] {
+function generateRawWorksheet(topicId: string, count: number): Exercise[] {
   if (topicId.startsWith('magyar-')) {
     return generateHungarianWorksheet(topicId, count);
   }
@@ -54,6 +54,57 @@ function generateAnyWorksheet(topicId: string, count: number): Exercise[] {
     return generateMathGrade1Worksheet(topicId, count);
   }
   return generateWorksheet(topicId, count);
+}
+
+function getExerciseSignature(ex: Exercise): string {
+  switch (ex.kind) {
+    case 'written-arithmetic':
+      return `${ex.kind}|${ex.operation}|${ex.operandA}|${ex.operandB}`;
+    case 'written-division':
+      return `${ex.kind}|${ex.dividend}|${ex.divisor}`;
+    case 'rounding-neighbors':
+      return `${ex.kind}|${ex.item.number}|${ex.item.neighborType}`;
+    case 'place-value':
+      return `${ex.kind}|${ex.expression}`;
+    case 'unit-conversion':
+      return `${ex.kind}|${ex.sourceText}|${ex.targetUnit}`;
+    case 'negative-numbers':
+      return `${ex.kind}|${ex.questionText}`;
+    case 'word-problem':
+      return `${ex.kind}|${ex.story}|${ex.question}`;
+    case 'roman-numerals':
+      return `${ex.kind}|${ex.direction}|${ex.promptValue}`;
+    case 'fractions':
+      return `${ex.kind}|${ex.wholeValue}|${ex.wholeUnit}|${ex.numerator}|${ex.denominator}`;
+    case 'hu-choice':
+      return `${ex.kind}|${ex.promptText}`;
+    case 'hu-text-input':
+      return `${ex.kind}|${ex.beforeText}|${ex.afterText ?? ''}|${ex.exactAnswer}`;
+    case 'hu-triad':
+      return `${ex.kind}|${ex.headerBadge}|${ex.fields.map((f) => f.exactAnswer).join(',')}`;
+  }
+}
+
+function generateAnyWorksheet(topicId: string, count: number): Exercise[] {
+  const unique: Exercise[] = [];
+  const seen = new Set<string>();
+  let rounds = 0;
+
+  while (unique.length < count && rounds < 25) {
+    const batchSize = rounds === 0 ? count : Math.max(count, 6);
+    const batch = generateRawWorksheet(topicId, batchSize);
+    for (const ex of batch) {
+      if (unique.length >= count) break;
+      const sig = getExerciseSignature(ex);
+      if (!seen.has(sig)) {
+        seen.add(sig);
+        unique.push(ex);
+      }
+    }
+    rounds++;
+  }
+
+  return unique;
 }
 
 function getMaxScoreForExercise(ex: Exercise): number {

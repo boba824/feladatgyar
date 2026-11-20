@@ -4,6 +4,19 @@ Minden lényeges változás ebben a fájlban kerül dokumentálásra.
 
 A formátum a [Keep a Changelog](https://keepachangelog.com/hu/1.1.0/) ajánlásain alapul, a projekt pedig a [Szemantikus Verziózást (SemVer)](https://semver.org/lang/hu/) követi (`MAJOR.MINOR.PATCH`).
 
+## [1.4.0] - 2026-11-20
+
+### Módosítva (Changed)
+- **Rávezető segédletek (villanykörte ikon / `hint`) pedagógiai átdolgozása (1–4. osztály):** A feladatokhoz tartozó segédletek mostantól egyetlen feladattípusnál sem árulják el a végeredményt, hanem kizárólag a megoldáshoz vezető gondolatmenetre, átváltási szabályra vagy az első részlépésre vezetnek rá.
+- **Favicon és böngészőfül címsor:**
+  - A `favicon.svg` háttérátmenete az új tengerészkék (**navy blue**) színsémához igazodott (`#1e3a8a` → `#1d4ed8`).
+  - A böngészőfül címsora (*`<title>`*) *"Feladatgyár - Tudásépítő Feladatgenerátor"* feliratra frissült.
+
+### Javítva (Fixed)
+- **Feladat-ismétlődés elleni védelem:** Központi feladat-ujjlenyomat (`getExerciseSignature`) és deduplikáció beépítése a feladatsor-generátorba, így egyetlen generált feladatsoron belül sem fordulhat elő két azonos feladat.
+
+---
+
 ## [1.3.0] - 2026-11-13
 
 ### Hozzáadva (Added)

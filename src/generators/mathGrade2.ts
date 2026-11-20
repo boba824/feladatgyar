@@ -81,7 +81,7 @@ function generateAddSubRange(
       instruction: 'Melyik szám hiányzik a műveletből? Írd be a hiányzó számot!',
       expression: `${a} + ? = ${sum}`,
       exactResult,
-      hint: `Gondolkodj így: ${a}-hoz mennyit kell adni, hogy ${sum} legyen? Számold ki: ${sum} - ${a} = ${exactResult}.`,
+      hint: `Gondolkodj így: ${a}-hoz mennyit kell adni, hogy ${sum} legyen? Számold ki: ${sum} - ${a}!`,
     };
   }
 
@@ -97,7 +97,7 @@ function generateAddSubRange(
     instruction: 'Melyik szám hiányzik a kivonásból? Írd be a hiányzó számot!',
     expression: `${a} - ? = ${diff}`,
     exactResult,
-    hint: `${a}-ból mennyit kell elvenni, hogy ${diff} maradjon? Számold ki: ${a} - ${diff} = ${exactResult}.`,
+    hint: `${a}-ból mennyit kell elvenni, hogy ${diff} maradjon? Számold ki: ${a} - ${diff}!`,
   };
 }
 
@@ -122,7 +122,7 @@ function generateMulDivByTable(
       instruction: 'Számítsd ki a szorzatot!',
       expression: `${left} · ${right}`,
       exactResult,
-      hint: `A szorzás többszöri összeadás: ${left} · ${right} = ${exactResult}.`,
+      hint: `A szorzás többszöri összeadás: add össze a(z) ${right}-t ${left}-szer (vagy a(z) ${left}-t ${right}-szer)!`,
     };
   }
 
@@ -135,7 +135,7 @@ function generateMulDivByTable(
     instruction: 'Számítsd ki a hányadost!',
     expression: `${dividend} : ${factor}`,
     exactResult: other,
-    hint: `Hányszor van meg a(z) ${dividend}-ben a(z) ${factor}? Ellenőrzés: ${other} · ${factor} = ${dividend}.`,
+    hint: `Gondold végig a(z) ${factor}-es szorzótáblát: melyik számot kell ${factor}-vel megszorozni, hogy ${dividend}-t kapj?`,
   };
 }
 
@@ -159,7 +159,7 @@ function generateRemainderDiv2(
     quotient,
     remainder,
     hasRemainder: true,
-    hint: `Keresd meg a(z) ${dividend}-nél kisebb legnagyobb számot, amelyben megvan a(z) ${divisor}: ${quotient} · ${divisor} = ${quotient * divisor}, maradék: ${dividend} - ${quotient * divisor} = ${remainder}.`,
+    hint: `Keresd meg a(z) ${dividend}-nél kisebb legnagyobb számot, amely osztható ${divisor}-vel (ez a(z) ${quotient * divisor}), majd számold ki, mennyi marad a(z) ${dividend}-ből!`,
   };
 }
 
@@ -210,7 +210,7 @@ function generateRounding100(topicId: string): RoundingNeighborsExercise {
       rounded,
       neighborType: 'tízes',
     },
-    hint: `A(z) ${num} a(z) ${smallerNeighbor} és a(z) ${largerNeighbor} között van. Mivel az egyesek helyén ${ones} áll, ${ones < 5 ? 'lefelé' : 'felfelé'} kerekítünk: ${rounded}.`,
+    hint: `Nézd meg, melyik két kerek tízes közé esik a(z) ${num}! Mivel az egyesek helyén ${ones} áll, ${ones < 5 ? 'a kisebb' : 'a nagyobb'} tízes szomszédra kerekítünk.`,
   };
 }
 
@@ -274,7 +274,7 @@ function generateTopic1(topicId: string, idx: number): Exercise {
       instruction: 'Számold ki az eredményt balról jobbra haladva!',
       expression: `${a} + ${b} - ${c}`,
       exactResult,
-      hint: `Először add össze: ${a} + ${b} = ${a + b}, majd vegyél el belőle ${c}-t: ${a + b} - ${c} = ${exactResult}.`,
+      hint: `Először add össze az első két számot (${a} + ${b} = ${a + b}), majd az összegből vegyél el ${c}-t!`,
     };
   }
   // Szöveges feladat 20-ig
@@ -291,7 +291,7 @@ function generateTopic1(topicId: string, idx: number): Exercise {
       'db',
       total,
       `${start} + ${added} = ${total}`,
-      `Add össze a két mennyiséget: ${start} + ${added} = ${total}!`
+      `Add össze a két mennyiséget: ${start} + ${added}!`
     );
   }
   const all = randInt(13, 19);
@@ -331,7 +331,7 @@ function generateTopic2(topicId: string, idx: number): Exercise {
       instruction: 'Írd be, mennyi az összeadás (és a szorzás) eredménye!',
       expression: `${sumText} = ${times} · 2`,
       exactResult,
-      hint: `Számold össze a ketteseket (${times} darab 2-es): ${times} · 2 = ${exactResult}.`,
+      hint: `Számolj kettesével ${times}-szor (${times} · 2)!`,
     };
   }
   const pairs = randInt(4, 9);
@@ -344,7 +344,7 @@ function generateTopic2(topicId: string, idx: number): Exercise {
     'db',
     total,
     `${pairs} · 2 = ${total}`,
-    `Egy párban 2 cipő van, tehát ${pairs} · 2 = ${total}.`
+    `Egy párban 2 cipő van, ezért szorozd meg a párok számát (${pairs}) 2-vel!`
   );
 }
 
@@ -365,7 +365,7 @@ function generateTopic3(topicId: string, idx: number): Exercise {
         instruction: 'Add össze a kerek tízeseket!',
         expression: `${a} + ${b}`,
         exactResult: a + b,
-        hint: `${a / 10} tízes + ${b / 10} tízes = ${(a + b) / 10} tízes, azaz ${a + b}.`,
+        hint: `Számolj a tízesekkel: ${a / 10} tízes + ${b / 10} tízes = ${(a + b) / 10} tízes. Mennyi az egyesekben?`,
       };
     }
     const a = randInt(4, 10) * 10;
@@ -378,7 +378,7 @@ function generateTopic3(topicId: string, idx: number): Exercise {
       instruction: 'Vond ki a kerek tízeseket!',
       expression: `${a} - ${b}`,
       exactResult: a - b,
-      hint: `${a / 10} tízes - ${b / 10} tízes = ${(a - b) / 10} tízes, azaz ${a - b}.`,
+      hint: `Számolj a tízesekkel: ${a / 10} tízes - ${b / 10} tízes = ${(a - b) / 10} tízes. Írd le számmal!`,
     };
   }
   if (mod === 1) {
@@ -396,7 +396,7 @@ function generateTopic3(topicId: string, idx: number): Exercise {
       instruction: 'Melyik számot írtuk fel tízesekkel és egyesekkel? Írd be számjegyekkel!',
       expression: `${t} t + ${e} e`,
       exactResult: t * 10 + e,
-      hint: `${t} tízes = ${t * 10}, ehhez jön ${e} egyes → ${t * 10 + e}.`,
+      hint: `${t} tízes az ${t * 10}. Adj hozzá ${e} egyest!`,
     };
   }
   const boxes = randInt(3, 9);
@@ -409,7 +409,7 @@ function generateTopic3(topicId: string, idx: number): Exercise {
     'db',
     total,
     `${boxes} · 10 = ${total}`,
-    `Szorozd meg a dobozok számát 10-zel: ${boxes} · 10 = ${total}.`
+    `Szorozd meg a dobozok számát (${boxes}) 10-zel!`
   );
 }
 
@@ -452,7 +452,7 @@ function generateTopic4(topicId: string, idx: number): Exercise {
     sourceText: `${days} nap`,
     targetUnit: 'óra',
     exactResult: days * 24,
-    hint: `1 nap = 24 óra, tehát ${days} nap = ${days * 24} óra.`,
+    hint: `1 nap 24 órából áll. Szorozd meg a napok számát (${days}) 24-gyel!`,
   };
 }
 
@@ -478,7 +478,7 @@ function generateTopic5(topicId: string, idx: number): Exercise {
     'db',
     wheels,
     `${cars} · 4 = ${wheels}`,
-    `Minden autón 4 kerék van, tehát ${cars} · 4 = ${wheels}.`
+    `Minden autón 4 kerék van, ezért szorozd meg az autók számát (${cars}) 4-gyel!`
   );
 }
 
@@ -504,7 +504,7 @@ function generateTopic6(topicId: string, idx: number): Exercise {
     'Ft',
     sum,
     `${coins} · 5 = ${sum}`,
-    `Szorozd meg az érmék számát 5-tel: ${coins} · 5 = ${sum} Ft.`
+    `Szorozd meg az érmék számát (${coins}) 5-tel!`
   );
 }
 
@@ -516,25 +516,29 @@ function generateTopic7(topicId: string, idx: number): Exercise {
       prompt: string;
       options: string[];
       correct: string;
+      explanation: string;
       hint: string;
     }> = [
       {
         prompt: 'Melyik tartozik a TESTEK (térbeli alakzatok) közé?',
         options: ['Kocka', 'Négyzet', 'Háromszög', 'Kör'],
         correct: 'Kocka',
-        hint: 'A négyzet, háromszög és kör síkidomok (laposak), míg a kocka egy térbeli test!',
+        explanation: 'A négyzet, háromszög és kör síkidomok (laposak), míg a kocka egy térbeli test!',
+        hint: 'Gondold végig, melyik alakzat nem lapos, hanem kézbe vehető, térbeli építőelem!',
       },
       {
         prompt: 'Melyik tartozik a SÍKIDOMOK közé?',
         options: ['Téglalap', 'Gömb', 'Henger', 'Gúla'],
         correct: 'Téglalap',
-        hint: 'A gömb, henger és gúla térbeli testek, a téglalap viszont síkidom.',
+        explanation: 'A gömb, henger és gúla térbeli testek, a téglalap viszont síkidom.',
+        hint: 'Keresd meg azt az alakzatot, amelyik teljesen lapos (papírlapra rajzolható síkidom)!',
       },
       {
         prompt: 'Melyik síkidomot határolja CSAK görbe vonal?',
         options: ['Kör', 'Négyzet', 'Háromszög', 'Téglalap'],
         correct: 'Kör',
-        hint: 'A négyzetet, háromszöget és téglalapot egyenes szakaszok határolják, a kört görbe vonal.',
+        explanation: 'A négyzetet, háromszöget és téglalapot egyenes szakaszok határolják, a kört görbe vonal.',
+        hint: 'Nézd meg, melyik alakzatnak nincsenek egyenes oldalai és csúcsai!',
       },
       {
         prompt: 'Melyik állítás IGAZ a szimmetrikus alakzatokra?',
@@ -545,7 +549,8 @@ function generateTopic7(topicId: string, idx: number): Exercise {
           'A szimmetrikus alakzat két fele mindig különböző méretű.',
         ],
         correct: 'A tükörtengely mentén félbehajtva a két fél pontosan fedi egymást.',
-        hint: 'Ha félbehajtod a szimmetrikus ábrát a tükörtengelynél, a két fele pontosan illeszkedik egymásra.',
+        explanation: 'Ha félbehajtod a szimmetrikus ábrát a tükörtengelynél, a két fele pontosan illeszkedik egymásra.',
+        hint: 'Képzeld el, mi történik, ha egy félbehajtott papírlapból kivágsz egy formát és kihajtod!',
       },
     ];
     const q = questions[Math.floor(idx / 3) % questions.length];
@@ -558,7 +563,7 @@ function generateTopic7(topicId: string, idx: number): Exercise {
       promptText: q.prompt,
       options: q.options,
       correctOption: q.correct,
-      explanation: q.hint,
+      explanation: q.explanation,
       hint: q.hint,
     };
     return ex;
@@ -581,7 +586,7 @@ function generateTopic7(topicId: string, idx: number): Exercise {
       '',
       num + dir.delta,
       `${num} ${dir.delta >= 0 ? '+' : '-'} ${Math.abs(dir.delta)} = ${num + dir.delta}`,
-      `A százas táblán a(z) ${dir.label} lévő szám ${dir.explain}: ${num} ${dir.delta >= 0 ? '+' : '-'} ${Math.abs(dir.delta)}.`
+      `A százas táblán a(z) ${dir.label} lévő szám ${dir.explain}: számold ki a(z) ${num} ${dir.delta >= 0 ? '+' : '-'} ${Math.abs(dir.delta)} műveletet!`
     );
   }
 
@@ -596,7 +601,7 @@ function generateTopic7(topicId: string, idx: number): Exercise {
     'oldal',
     squares * 4 + triangles * 3,
     `${squares} · 4 + ${triangles} · 3 = ${squares * 4 + triangles * 3}`,
-    `Egy négyzetnek 4 oldala, egy háromszögnek 3 oldala van.`
+    `Egy négyzetnek 4 oldala (${squares} · 4), egy háromszögnek 3 oldala (${triangles} · 3) van. Add össze a két szorzatot!`
   );
 }
 
@@ -624,7 +629,7 @@ function generateTopic8(topicId: string, idx: number): Exercise {
     sourceText: `1 óra ${minsExtra} perc`,
     targetUnit: 'perc',
     exactResult: 60 + minsExtra,
-    hint: `1 óra = 60 perc, tehát 60 + ${minsExtra} = ${60 + minsExtra} perc.`,
+    hint: `1 óra = 60 perc. Add hozzá a 60 perchez a(z) ${minsExtra} percet!`,
   };
 }
 
@@ -651,7 +656,7 @@ function generateTopic9(topicId: string, idx: number): Exercise {
     sourceText: `${weeks} hét`,
     targetUnit: 'nap',
     exactResult: weeks * 7,
-    hint: `1 hét = 7 nap, tehát ${weeks} · 7 = ${weeks * 7} nap.`,
+    hint: `1 hét 7 napból áll, ezért szorozd meg a hetek számát (${weeks}) 7-tel!`,
   };
 }
 
@@ -679,7 +684,7 @@ function generateTopic10(topicId: string, idx: number): Exercise {
     '',
     base * 8,
     `${base} · 4 = ${base * 4}, ennek a kétszerese ${base * 8}`,
-    `A 8 a 4-nek a kétszerese! Duplázd meg a ${base * 4}-et: ${base * 4} + ${base * 4} = ${base * 8}.`
+    `A 8 a 4-nek a kétszerese! Duplázd meg a(z) ${base * 4}-et (${base * 4} + ${base * 4})!`
   );
 }
 
@@ -717,7 +722,7 @@ function generateTopic12(topicId: string, idx: number): Exercise {
         sourceText: `${dm} dm`,
         targetUnit: 'cm',
         exactResult: dm * 10,
-        hint: `1 dm = 10 cm, így ${dm} dm = ${dm * 10} cm.`,
+        hint: `1 dm = 10 cm, ezért szorozd meg a deciméterek számát (${dm}) 10-zel!`,
       };
     }
     const dm = randInt(1, 8);
@@ -732,7 +737,7 @@ function generateTopic12(topicId: string, idx: number): Exercise {
       sourceText: `${dm} dm ${cm} cm`,
       targetUnit: 'cm',
       exactResult: dm * 10 + cm,
-      hint: `${dm} dm = ${dm * 10} cm, ehhez adjuk a ${cm} cm-t → ${dm * 10 + cm} cm.`,
+      hint: `Váltsd át a(z) ${dm} dm-t centiméterre (${dm * 10} cm), majd add hozzá a(z) ${cm} cm-t!`,
     };
   }
 
@@ -749,7 +754,7 @@ function generateTopic12(topicId: string, idx: number): Exercise {
         'kg',
         daily * 7,
         `${daily} · 7 = ${daily * 7}`,
-        `Egy hét 7 napból áll, tehát ${daily} · 7 = ${daily * 7} kg.`
+        `Egy hét 7 napból áll, ezért szorozd meg a napi adagot (${daily} kg) 7-tel!`
       );
     }
     const picked = pickRandom([20, 35, 45, 53, 68, 78]);
@@ -762,7 +767,7 @@ function generateTopic12(topicId: string, idx: number): Exercise {
       'kg',
       left,
       `100 - ${picked} = ${left}`,
-      `Számold ki: 100 - ${picked} = ${left} kg.`
+      `Vond ki a tervezett 100 kg-ból a már leszedett ${picked} kg-ot!`
     );
   }
 
@@ -780,7 +785,7 @@ function generateTopic12(topicId: string, idx: number): Exercise {
       sourceText: `${l} l ${dl} dl`,
       targetUnit: 'dl',
       exactResult: l * 10 + dl,
-      hint: `1 l = 10 dl, ezért ${l} l = ${l * 10} dl. Ehhez adjuk a ${dl} dl-t → ${l * 10 + dl} dl.`,
+      hint: `1 l = 10 dl, ezért a(z) ${l} l az ${l * 10} dl. Ehhez add hozzá a(z) ${dl} dl-t!`,
     };
   }
 
