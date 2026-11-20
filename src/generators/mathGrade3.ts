@@ -44,7 +44,7 @@ function generateRemainderDivision100(topicId: string): WrittenDivisionExercise 
     quotient,
     remainder,
     hasRemainder: true,
-    hint: `Keresd meg a(z) ${dividend}-nél kisebb legnagyobb számot, amely osztható ${divisor}-val: ${quotient} · ${divisor} = ${quotient * divisor}, és marad a(z) ${dividend} - ${quotient * divisor} = ${remainder}.`,
+    hint: `Keresd meg a(z) ${dividend}-nél kisebb legnagyobb számot, amely osztható ${divisor}-val (ez a(z) ${quotient * divisor}), majd számold ki, mennyi marad a(z) ${dividend}-ből!`,
   };
 }
 
@@ -70,7 +70,7 @@ function generateOrderOfOperations3(
         instruction: 'Számítsd ki a kifejezés értékét! Ne feledd: a szorzást előbb végezzük el, mint az összeadást!',
         expression: `${a} · ${b} + ${c}`,
         exactResult,
-        hint: `Először szorzunk: ${a} · ${b} = ${a * b}, majd hozzáadjuk a(z) ${c}-t: ${a * b} + ${c} = ${exactResult}.`,
+        hint: `Először a szorzást végezd el (${a} · ${b} = ${a * b}), majd az eredményhez add hozzá a(z) ${c}-t!`,
       };
     }
     if (variant === 2) {
@@ -87,7 +87,7 @@ function generateOrderOfOperations3(
         instruction: 'Számítsd ki a zárójeles kifejezés értékét! Először a zárójelben lévő műveletet végezd el!',
         expression: `(${part1} + ${part2}) : ${divisor}`,
         exactResult: q,
-        hint: `A zárójelben: ${part1} + ${part2} = ${prod}. Utána osztunk: ${prod} : ${divisor} = ${q}.`,
+        hint: `Először a zárójelben lévő összeadást végezd el (${part1} + ${part2} = ${prod}), majd az összeget oszd el ${divisor}-val!`,
       };
     }
     const a = randInt(65, 95);
@@ -102,7 +102,7 @@ function generateOrderOfOperations3(
       instruction: 'Számítsd ki az eredményt! Ügyelj a műveletek helyes sorrendjére!',
       expression: `${a} - ${m1} · ${m2}`,
       exactResult,
-      hint: `Először a szorzást végezzük el: ${m1} · ${m2} = ${m1 * m2}, majd kivonjuk: ${a} - ${m1 * m2} = ${exactResult}.`,
+      hint: `Először a szorzást végezd el (${m1} · ${m2} = ${m1 * m2}), majd vond ki ezt a(z) ${a}-ból!`,
     };
   }
 
@@ -121,7 +121,7 @@ function generateOrderOfOperations3(
         instruction: 'Számítsd ki a hányadost a munkafüzet 47. oldalának mintájára!',
         expression: `${dividend} : ${d}`,
         exactResult: tens,
-        hint: `${dividend / 10} tízes : ${d} = ${q} tízes, vagyis ${tens}.`,
+        hint: `Számolj tízesekkel: oszd el a(z) ${dividend / 10} tízest ${d}-val, majd váltsd át egyesekre (szorozd meg 10-zel)!`,
       };
     }
     if (variant === 2) {
@@ -136,7 +136,7 @@ function generateOrderOfOperations3(
         instruction: 'Hányszor van meg a kerek tízes az osztandóban? Számítsd ki!',
         expression: `${dividend} : ${divisorTens}`,
         exactResult: q,
-        hint: `${dividend} : ${divisorTens} ugyanannyi, mint ${dividend / 10} : ${divisorTens / 10} = ${q}.`,
+        hint: `Mindkét szám kerek tízes: ${dividend} : ${divisorTens} ugyanannyi, mintha a(z) ${dividend / 10}-et osztanád ${divisorTens / 10}-val!`,
       };
     }
     const a = randInt(2, 6) * 10;
@@ -151,7 +151,7 @@ function generateOrderOfOperations3(
       instruction: 'Végezd el a műveleteket a helyes sorrendben!',
       expression: `${a} · ${b} + ${add}`,
       exactResult,
-      hint: `Először szorzunk: ${a} · ${b} = ${a * b}, majd összeadunk: ${a * b} + ${add} = ${exactResult}.`,
+      hint: `Először szorozz (${a} · ${b} = ${a * b}), majd az eredményhez add hozzá a(z) ${add}-t!`,
     };
   }
 
@@ -169,7 +169,7 @@ function generateOrderOfOperations3(
         instruction: 'Számítsd ki a hányadost! (I. kötet 75. oldal alapján)',
         expression: `${dividend} : ${divisorTens}`,
         exactResult: q,
-        hint: `${dividend} : ${divisorTens} = ${dividend / 10} : ${divisorTens / 10} = ${q}.`,
+        hint: `Hagyd el mindkét szám végéről a nullát, és oszd el a(z) ${dividend / 10}-et ${divisorTens / 10}-val!`,
       };
     }
     if (variant === 2) {
@@ -184,7 +184,7 @@ function generateOrderOfOperations3(
         instruction: 'Számítsd ki a hányadost!',
         expression: `${dividend} : ${d}`,
         exactResult: qTens,
-        hint: `${dividend / 10} : ${d} = ${qTens / 10}, tehát ${dividend} : ${d} = ${qTens}.`,
+        hint: `Oszd el a tízesek számát (${dividend / 10}) ${d}-val, majd az eredmény végére írj egy nullát!`,
       };
     }
     const start = randInt(350, 495);
@@ -199,7 +199,7 @@ function generateOrderOfOperations3(
       instruction: 'Számítsd ki az eredményt! Ügyelj a műveletek sorrendjére!',
       expression: `${start} - ${f1} · ${f2}`,
       exactResult,
-      hint: `Először szorzunk: ${f1} · ${f2} = ${f1 * f2}, majd kivonunk: ${start} - ${f1 * f2} = ${exactResult}.`,
+      hint: `Először a szorzást végezd el (${f1} · ${f2} = ${f1 * f2}), majd ezt vond ki a(z) ${start}-ból!`,
     };
   }
 
@@ -216,7 +216,7 @@ function generateOrderOfOperations3(
     instruction: 'Számítsd ki a kifejezés értékét! (II. kötet 65. o. alapján)',
     expression: `${start} - ${f1} · ${f2}`,
     exactResult,
-    hint: `Először a szorzást végezzük el: ${f1} · ${f2} = ${f1 * f2}, majd kivonjuk: ${start} - ${f1 * f2} = ${exactResult}.`,
+    hint: `Először a szorzást végezd el (${f1} · ${f2} = ${f1 * f2}), majd ezt vond ki a(z) ${start}-ból!`,
   };
 }
 
@@ -241,7 +241,7 @@ function generatePlaceValue3(
     instruction: 'Melyik számot írtuk fel a helyi értékek összegével? Ügyelj a tízesátlépésre!',
     expression: `${sz} sz + ${t} t + ${e} e`,
     exactResult,
-    hint: `${sz} sz = ${sz * 100}, ${t} t = ${t * 10}, ${e} e = ${e}. Összeadva: ${sz * 100} + ${t * 10} + ${e} = ${exactResult}.`,
+    hint: `Váltsd át egyesekre és add össze őket: ${sz} sz = ${sz * 100}, ${t} t = ${t * 10}, ${e} e = ${e}!`,
   };
 }
 
@@ -276,7 +276,7 @@ function generateRoundingNeighbors3(
       rounded,
       neighborType,
     },
-    hint: `A(z) ${num} a(z) ${smallerNeighbor} és ${largerNeighbor} között van. Mivel a maradék ${rem}, kerekítve: ${rounded}.`,
+    hint: `Keresd meg a(z) ${num} előtti és utáni legközelebbi kerek ${neighborType}t! Mivel a végződés ${rem}, ${rem >= step / 2 ? 'felfelé (a nagyobbra)' : 'lefelé (a kisebbre)'} kerekítünk.`,
   };
 }
 
@@ -309,7 +309,7 @@ function generateWrittenAddition3(
     estimatedB,
     estimatedResult,
     exactResult,
-    hint: `${roundTo === 100 ? 'Százasra' : 'Tízesre'} kerekítve: ${operandA} ≈ ${estimatedA}, ${operandB} ≈ ${estimatedB}. Becslés: ${estimatedA} + ${estimatedB} = ${estimatedResult}.`,
+    hint: `A becsléshez kerekítsd a két tagot ${roundTo === 100 ? 'százasra' : 'tízesre'} (${operandA} ≈ ${estimatedA}, ${operandB} ≈ ${estimatedB}), majd a pontos összegnél jobbról balra (az egyesektől kezdve) adj össze!`,
   };
 }
 
@@ -336,7 +336,7 @@ function generateWrittenSubtraction3(topicId: string): WrittenArithmeticExercise
     estimatedB,
     estimatedResult,
     exactResult,
-    hint: `${roundTo === 100 ? 'Százasra' : 'Tízesre'} kerekítve: ${operandA} ≈ ${estimatedA}, ${operandB} ≈ ${estimatedB}. Becslés: ${estimatedA} - ${estimatedB} = ${estimatedResult}. Ellenőrzés: ${exactResult} + ${operandB} = ${operandA}.`,
+    hint: `A becsléshez kerekítsd a két számot ${roundTo === 100 ? 'százasra' : 'tízesre'} (${operandA} ≈ ${estimatedA}, ${operandB} ≈ ${estimatedB}), majd végezd el a kivonást helyi értékenként jobbról balra!`,
   };
 }
 
@@ -364,7 +364,7 @@ function generateWrittenMultiplication3(topicId: string): WrittenArithmeticExerc
     estimatedB,
     estimatedResult,
     exactResult,
-    hint: `Tízesre kerekítve: ${operandA} ≈ ${estimatedA}. Becslés: ${estimatedA} · ${operandB} = ${estimatedResult}. Pontos szorzat: ${operandA} · ${operandB} = ${exactResult}.`,
+    hint: `A becsléshez kerekítsd a szorzandót tízesre (${operandA} ≈ ${estimatedA}), majd szorozd meg ${operandB}-vel! A pontos szorzatnál haladj az egyesektől a nagyobb helyi értékek felé!`,
   };
 }
 
@@ -389,7 +389,7 @@ function generateRomanNumerals3(topicId: string): RomanNumeralsExercise {
       direction,
       promptValue: roman,
       exactAnswer: String(num),
-      hint: `Emlékeztető: I = 1, V = 5, X = 10, L = 50, C = 100 (IV = 4, IX = 9, XL = 40, XC = 90). A(z) ${roman} értéke: ${num}.`,
+      hint: `Emlékeztető: I = 1, V = 5, X = 10, L = 50, C = 100 (IV = 4, IX = 9, XL = 40, XC = 90). Olvasd össze a tízesek és az egyesek értékét!`,
     };
   }
 
@@ -402,7 +402,7 @@ function generateRomanNumerals3(topicId: string): RomanNumeralsExercise {
     direction,
     promptValue: String(num),
     exactAnswer: roman,
-    hint: `Bontsd helyi értékekre: tízesek (${Math.floor(num / 10) * 10} → ${toRoman(Math.floor(num / 10) * 10)}) és egyesek (${num % 10} → ${toRoman(num % 10)}). Együtt: ${roman}.`,
+    hint: `Bontsd a számot tízesekre (${Math.floor(num / 10) * 10}) és egyesekre (${num % 10}), majd írd le őket egymás után a római jelekkel (I = 1, V = 5, X = 10, L = 50, C = 100)!`,
   };
 }
 
@@ -421,7 +421,7 @@ function generateMassCapacityConversion3(topicId: string): UnitConversionExercis
         sourceText: `${kg} kg ${dkg} dkg`,
         targetUnit: 'dkg',
         exactResult: kg * 100 + dkg,
-        hint: `1 kg = 100 dkg, tehát ${kg} kg ${dkg} dkg = ${kg * 100} + ${dkg} = ${kg * 100 + dkg} dkg.`,
+        hint: `1 kg = 100 dkg, tehát a(z) ${kg} kg az ${kg * 100} dkg. Ehhez add hozzá a(z) ${dkg} dkg-ot!`,
       };
     },
     () => {
@@ -433,7 +433,7 @@ function generateMassCapacityConversion3(topicId: string): UnitConversionExercis
         sourceText: `${wholeKg} és fél kg`,
         targetUnit: 'dkg',
         exactResult: wholeKg * 100 + 50,
-        hint: `${wholeKg} kg = ${wholeKg * 100} dkg, fél kg = 50 dkg. Összesen: ${wholeKg * 100 + 50} dkg.`,
+        hint: `${wholeKg} kg = ${wholeKg * 100} dkg, a fél kg pedig 50 dkg. Add össze a kettőt!`,
       };
     },
     () => {
@@ -445,7 +445,7 @@ function generateMassCapacityConversion3(topicId: string): UnitConversionExercis
         sourceText: `${dl * 10} cl`,
         targetUnit: 'dl',
         exactResult: dl,
-        hint: `10 cl = 1 dl, tehát ${dl * 10} cl = ${dl} dl.`,
+        hint: `10 cl = 1 dl, ezért oszd el a centiliterek számát (${dl * 10}) 10-zel!`,
       };
     },
     () => {
@@ -458,7 +458,7 @@ function generateMassCapacityConversion3(topicId: string): UnitConversionExercis
         sourceText: `${l} l ${dl} dl`,
         targetUnit: 'dl',
         exactResult: l * 10 + dl,
-        hint: `1 liter = 10 dl, így ${l} l ${dl} dl = ${l * 10} + ${dl} = ${l * 10 + dl} dl.`,
+        hint: `1 liter = 10 dl, tehát a(z) ${l} l az ${l * 10} dl. Ehhez add hozzá a(z) ${dl} dl-t!`,
       };
     },
     () => {
@@ -470,7 +470,7 @@ function generateMassCapacityConversion3(topicId: string): UnitConversionExercis
         sourceText: `1 liter - ${usedCl} cl`,
         targetUnit: 'cl',
         exactResult: 100 - usedCl,
-        hint: `1 liter = 100 cl. Így 100 cl - ${usedCl} cl = ${100 - usedCl} cl.`,
+        hint: `1 liter = 100 cl. Vond ki 100-ból a(z) ${usedCl} cl-t!`,
       };
     },
   ];
@@ -506,7 +506,7 @@ function generateNegativeNumbers3(topicId: string): NegativeNumbersExercise {
       endTemp: inside,
       unit: '°C',
       exactResult: diff,
-      hint: `0 °C-tól ${outside} °C-ig ${Math.abs(outside)} °C van, 0 °C-tól +${inside} °C-ig pedig ${inside} °C. Összesen: ${Math.abs(outside)} + ${inside} = ${diff} °C a különbség.`,
+      hint: `0 °C-tól ${outside} °C-ig ${Math.abs(outside)} °C van, 0 °C-tól +${inside} °C-ig pedig ${inside} °C. Add össze a két távolságot!`,
     };
   }
 
@@ -527,7 +527,7 @@ function generateNegativeNumbers3(topicId: string): NegativeNumbersExercise {
       endTemp: morning,
       unit: '°C',
       exactResult: morning,
-      hint: `${evening} °C-ról ${evening} fok csökkenéssel érjük el a 0 °C-ot, és még ${drop - evening} fokot hűlt fagypont alá: ${morning} °C.`,
+      hint: `${evening} °C-ról ${evening} fok csökkenéssel érjük el a 0 °C-ot. Számold ki, hány fokkal hűlt még 0 °C alá (ne felejtsd el a mínusz előjelet)!`,
     };
   }
 
@@ -547,7 +547,7 @@ function generateNegativeNumbers3(topicId: string): NegativeNumbersExercise {
     endTemp: noon,
     unit: '°C',
     exactResult: noon,
-    hint: `${morning} °C + ${rise} °C = ${noon} °C.`,
+    hint: `${morning} °C-ról ${Math.abs(morning)} fok emelkedéssel érjük el a 0 °C-ot. Hány fokkal emelkedett még 0 °C fölé a maradékból?`,
   };
 }
 
@@ -584,7 +584,7 @@ function generateFractions3(topicId: string): FractionsExercise {
     denominator: cfg.denominator,
     denominatorLabel: cfg.label,
     exactResult,
-    hint: `Egy mennyiség ${cfg.label} úgy kapjuk meg, hogy elosztjuk ${cfg.denominator}-val: ${wholeValue} : ${cfg.denominator} = ${exactResult}.`,
+    hint: `Egy mennyiség ${cfg.label} úgy kapjuk meg, hogy az egészet (${wholeValue}) elosztjuk ${cfg.denominator}-val!`,
   };
 }
 
@@ -603,7 +603,7 @@ function generateTimeLengthConversion3(topicId: string): UnitConversionExercise 
         sourceText: `${h} óra ${m} perc`,
         targetUnit: 'perc',
         exactResult: h * 60 + m,
-        hint: `1 óra = 60 perc, így ${h} óra = ${h * 60} perc. Hozzáadva a(z) ${m} percet: ${h * 60 + m} perc.`,
+        hint: `1 óra = 60 perc, így ${h} óra = ${h * 60} perc. Ehhez add hozzá a(z) ${m} percet!`,
       };
     },
     () => {
@@ -616,7 +616,7 @@ function generateTimeLengthConversion3(topicId: string): UnitConversionExercise 
         sourceText: `${m} m ${dm} dm`,
         targetUnit: 'dm',
         exactResult: m * 10 + dm,
-        hint: `1 m = 10 dm, tehát ${m} m ${dm} dm = ${m * 10} + ${dm} = ${m * 10 + dm} dm.`,
+        hint: `1 m = 10 dm, tehát a(z) ${m} m az ${m * 10} dm. Ehhez add hozzá a(z) ${dm} dm-t!`,
       };
     },
     () => {
@@ -629,7 +629,7 @@ function generateTimeLengthConversion3(topicId: string): UnitConversionExercise 
         sourceText: `${m} m ${dm} dm`,
         targetUnit: 'cm',
         exactResult: m * 100 + dm * 10,
-        hint: `${m} m = ${m * 100} cm, ${dm} dm = ${dm * 10} cm. Összesen: ${m * 100 + dm * 10} cm.`,
+        hint: `${m} m = ${m * 100} cm, ${dm} dm = ${dm * 10} cm. Add össze a két értéket!`,
       };
     },
     () => {
@@ -642,7 +642,7 @@ function generateTimeLengthConversion3(topicId: string): UnitConversionExercise 
         sourceText: `${cm} cm ${mm} mm`,
         targetUnit: 'mm',
         exactResult: cm * 10 + mm,
-        hint: `1 cm = 10 mm, így ${cm} cm ${mm} mm = ${cm * 10 + mm} mm.`,
+        hint: `1 cm = 10 mm, így a(z) ${cm} cm az ${cm * 10} mm. Ehhez add hozzá a(z) ${mm} mm-t!`,
       };
     },
   ];
@@ -786,7 +786,7 @@ function generateWordProblem3(
             unit: 'kg',
             exactResult: totalKg,
             solutionSteps: `(30 + 60 + 110) dkg = 200 dkg = 2 kg`,
-            hint: `Add össze dekagrammban: 30 + 60 + 110 = 200 dkg. Mivel 100 dkg = 1 kg, ez pontosan 2 kg!`,
+            hint: `Add össze dekagrammban a háromféle termést (30 + 60 + 110), majd váltsd át kilogrammba (100 dkg = 1 kg)!`,
           };
         },
         () => {
@@ -825,7 +825,7 @@ function generateWordProblem3(
         unit: 'ló',
         exactResult: totalHorses,
         solutionSteps: `${blackHorses} + 3 · ${blackHorses} = ${blackHorses} + ${greyHorses}`,
-        hint: `A szürke lovak száma: 3 · ${blackHorses} = ${greyHorses}. Összesen: ${blackHorses} + ${greyHorses} = ${totalHorses} ló.`,
+        hint: `Először számítsd ki a szürke lovak számát (3 · ${blackHorses} = ${greyHorses}), majd add hozzá a fekete lovak számát (${blackHorses})!`,
       };
     }
 
@@ -944,7 +944,7 @@ function generateWordProblem3(
             unit: 'm',
             exactResult: k,
             solutionSteps: `2 · (${a} + ${b}) = 2 · ${a + b} = ${k}`,
-            hint: `A téglalap kerülete: K = 2 · (a + b) = ${a} + ${b} + ${a} + ${b} = ${k} m.`,
+            hint: `A téglalapnak két ${a} m-es és két ${b} m-es oldala van. Add össze mind a négy oldal hosszát (${a} + ${b} + ${a} + ${b})!`,
           };
         },
         () => {
@@ -958,7 +958,7 @@ function generateWordProblem3(
             unit: 'négyzetegység',
             exactResult: a * b,
             solutionSteps: `${a} · ${b} = ${a * b}`,
-            hint: `A téglalap területét a két szomszédos oldal szorzata adja: T = ${a} · ${b} = ${a * b}.`,
+            hint: `A téglalap területét a két szomszédos oldal szorzata adja: szorozd össze a(z) ${a}-t és a(z) ${b}-t!`,
           };
         },
         () => ({
@@ -969,7 +969,7 @@ function generateWordProblem3(
           unit: 'perc',
           exactResult: 80,
           solutionSteps: '11:00-tól 12:20-ig = 1 óra 20 perc = 80 perc',
-          hint: '11:00-tól 12:00-ig 60 perc telik el, 12:00-tól 12:20-ig pedig még 20 perc: 60 + 20 = 80 perc.',
+          hint: '11:00-tól 12:00-ig 1 óra (60 perc) telik el, 12:00-tól 12:20-ig pedig még 20 perc. Add össze a kettőt!',
         }),
       ];
       return { id: uid('wp3-perim'), kind: 'word-problem', topicId, ...pickRandom(templates)() };

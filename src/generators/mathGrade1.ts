@@ -38,7 +38,7 @@ function generateAddSub1(
       instruction: 'Számold ki az összeget!',
       expression: `${a} + ${b}`,
       exactResult: a + b,
-      hint: `Kezdj a(z) ${a}-tól, és számolj hozzá ${b}-t! (${a} + ${b} = ${a + b})`,
+      hint: `Indulj a(z) ${a}-tól a számegyenesen, és lépj előre ${b}-t!`,
     };
   }
 
@@ -53,7 +53,7 @@ function generateAddSub1(
       instruction: 'Számold ki a különbséget!',
       expression: `${a} - ${b}`,
       exactResult: a - b,
-      hint: `A(z) ${a}-ból vegyél el ${b}-t! Mennyi marad? (${a} - ${b} = ${a - b})`,
+      hint: `Indulj a(z) ${a}-tól a számegyenesen, és lépj vissza ${b}-t!`,
     };
   }
 
@@ -69,7 +69,7 @@ function generateAddSub1(
       instruction: 'Melyik szám hiányzik a műveletből? Írd be a hiányzó számot!',
       expression: `${a} + ? = ${sum}`,
       exactResult: missing,
-      hint: `Gondold végig: ${a}-hoz mennyit kell adni, hogy ${sum} legyen? (${sum} - ${a} = ${missing})`,
+      hint: `Gondold végig: ${a}-hoz mennyit kell hozzáadni, hogy ${sum} legyen? Számold ki: ${sum} - ${a}!`,
     };
   }
 
@@ -84,7 +84,7 @@ function generateAddSub1(
     instruction: 'Melyik szám hiányzik a kivonásból?',
     expression: `${a} - ? = ${diff}`,
     exactResult: missing,
-    hint: `${a}-ból mennyit vettünk el, ha ${diff} maradt? (${a} - ${diff} = ${missing})`,
+    hint: `${a}-ból mennyit vettünk el, ha ${diff} maradt? Számold ki: ${a} - ${diff}!`,
   };
 }
 
@@ -109,7 +109,7 @@ function generateCrossTen1(
       instruction: 'Számold ki az összeget tízesátlépéssel!',
       expression: `${a} + ${b}`,
       exactResult: sum,
-      hint: `Pótold először a(z) ${a}-t 10-re (${a} + ${toTen} = 10), majd add hozzá a maradék ${rest}-t: 10 + ${rest} = ${sum}.`,
+      hint: `Pótold először a(z) ${a}-t 10-re (${a} + ${toTen} = 10), majd a 10-hez add hozzá a maradék ${rest}-t!`,
     };
   }
 
@@ -126,7 +126,7 @@ function generateCrossTen1(
     instruction: 'Számold ki a különbséget két lépésben!',
     expression: `${a} - ${b}`,
     exactResult,
-    hint: `Először vegyél el ${ones}-t, hogy 10 maradjon (${a} - ${ones} = 10), majd vegyél el még ${restAfterTen}-t: 10 - ${restAfterTen} = ${exactResult}.`,
+    hint: `Először vegyél el ${ones}-t, hogy 10 maradjon (${a} - ${ones} = 10), majd a 10-ből vegyél el még ${restAfterTen}-t!`,
   };
 }
 
@@ -167,31 +167,36 @@ function generateTopic1(topicId: string, idx: number): Exercise {
       prompt: string;
       options: string[];
       correct: string;
+      explanation: string;
       hint: string;
     }> = [
       {
         prompt: 'Melyik sorban van TÖBB gyümölcs: 5 alma vagy 3 körte?',
         options: ['Az 5 alma több', 'A 3 körte több', 'Ugyanannyi van', 'Nem lehet tudni'],
         correct: 'Az 5 alma több',
-        hint: 'Az 5 nagyobb szám, mint a 3, ezért 5 alma több.',
+        explanation: 'Az 5 nagyobb szám, mint a 3, ezért 5 alma több.',
+        hint: 'Hasonlítsd össze az 5-öt és a 3-at a számegyenesen: melyik a nagyobb szám?',
       },
       {
-        prompt: 'Melyik állat a KAKUKKTOJÁS a sorban: kutya, macska, villamos, nyuszi?',
+        prompt: 'Melyik a KAKUKKTOJÁS a sorban: kutya, macska, villamos, nyuszi?',
         options: ['villamos', 'kutya', 'macska', 'nyuszi'],
         correct: 'villamos',
-        hint: 'A kutya, a macska és a nyuszi élő állatok, a villamos viszont jármű!',
+        explanation: 'A kutya, a macska és a nyuszi élő állatok, a villamos viszont jármű!',
+        hint: 'Nézd meg, melyik három tartozik az élő állatok közé, és melyik a jármű!',
       },
       {
         prompt: 'A polcon a mackó FÖLÖTT van a labda, a mackó ALATT pedig a kisautó. Mi van legfelül?',
         options: ['A labda', 'A mackó', 'A kisautó', 'Mind egy magasságban van'],
         correct: 'A labda',
-        hint: 'Mivel a labda van a mackó fölött, a labda van legfelül.',
+        explanation: 'Mivel a labda van a mackó fölött, a labda van legfelül.',
+        hint: 'Képzeld el a polcot: a mackó középen van. Mi került a mackó fölé?',
       },
       {
-        prompt: 'Melyik szám KEVESEBB: 4 piros korong vagy 6 kék korong?',
+        prompt: 'Melyikből van KEVESEBB: 4 piros korongból vagy 6 kék korongból?',
         options: ['A 4 piros korong kevesebb', 'A 6 kék korong kevesebb', 'Ugyanannyi van', 'Mindkettő 10'],
         correct: 'A 4 piros korong kevesebb',
-        hint: 'A 4 kisebb szám, mint a 6, így 4 korong kevesebb.',
+        explanation: 'A 4 kisebb szám, mint a 6, így 4 korong kevesebb.',
+        hint: 'Hasonlítsd össze a 4-et és a 6-ot: melyik a kisebb szám?',
       },
     ];
     const q = questions[Math.floor(idx / 2) % questions.length];
@@ -204,7 +209,7 @@ function generateTopic1(topicId: string, idx: number): Exercise {
       promptText: q.prompt,
       options: q.options,
       correctOption: q.correct,
-      explanation: q.hint,
+      explanation: q.explanation,
       hint: q.hint,
     };
     return ex;
@@ -220,7 +225,7 @@ function generateTopic1(topicId: string, idx: number): Exercise {
     'db',
     left + right,
     `${left} + ${right} = ${left + right}`,
-    `Számold össze a piros és a kék kockákat: ${left} + ${right} = ${left + right}!`
+    `Add össze a piros és a kék kockák számát: ${left} + ${right}!`
   );
 }
 
@@ -249,7 +254,7 @@ function generateTopic2(topicId: string, idx: number): Exercise {
     'db',
     a + b,
     `${a} + ${b} = ${a + b}`,
-    `Add össze: ${a} + ${b} = ${a + b}.`
+    `Add össze a tányéron lévő és a mellé tett eperszemeket: ${a} + ${b}!`
   );
 }
 
@@ -274,7 +279,7 @@ function generateTopic3(topicId: string, idx: number): Exercise {
       explanation: isEven
         ? `A(z) ${num} párba állítható maradék nélkül, ezért páros.`
         : `A(z) ${num} párba állításakor 1 kimarad, ezért páratlan.`,
-      hint: 'Páros számok 7-ig: 0, 2, 4, 6. Páratlan számok: 1, 3, 5, 7.',
+      hint: 'Állítsd kettesével párba a korongokat! Ha nem marad ki egy sem, akkor páros.',
     };
     return ex;
   }
@@ -291,8 +296,8 @@ function generateTopic3(topicId: string, idx: number): Exercise {
     askLarger ? center + 1 : center - 1,
     askLarger ? `${center} + 1 = ${center + 1}` : `${center} - 1 = ${center - 1}`,
     askLarger
-      ? `A nagyobb szomszéd 1-gyel több: ${center} + 1.`
-      : `A kisebb szomszéd 1-gyel kevesebb: ${center} - 1.`
+      ? `A nagyobb egyes szomszéd 1-gyel több a számnál (${center} + 1).`
+      : `A kisebb egyes szomszéd 1-gyel kevesebb a számnál (${center} - 1).`
   );
 }
 
@@ -343,7 +348,7 @@ function generateTopic5(topicId: string, idx: number): Exercise {
       instruction: 'Pótold a hiányzó számot, hogy az összeg 10 legyen!',
       expression: `${a} + ? = 10`,
       exactResult: 10 - a,
-      hint: `Mennyi hiányzik ${a}-hoz, hogy 10 legyen? (10 - ${a} = ${10 - a})`,
+      hint: `Mennyi hiányzik ${a}-hoz, hogy 10 legyen? Számold ki: 10 - ${a}!`,
     };
   }
   if (mod === 1) {
@@ -359,7 +364,7 @@ function generateTopic5(topicId: string, idx: number): Exercise {
     'db',
     have + bought,
     `${have} + ${bought} = ${have + bought}`,
-    `Add össze: ${have} + ${bought} = ${have + bought}.`
+    `Add össze a meglévő és az újonnan kapott ceruzákat: ${have} + ${bought}!`
   );
 }
 
@@ -379,7 +384,7 @@ function generateTopic6(topicId: string, idx: number): Exercise {
       instruction: 'Melyik szám hiányzik az almáról, hogy a három szám összege 10 legyen?',
       expression: `${a} + ${b} + ? = 10`,
       exactResult: c,
-      hint: `Először add össze az első két számot: ${a} + ${b} = ${a + b}. Ehhez még ${c} kell, hogy 10 legyen!`,
+      hint: `Először add össze az első két számot (${a} + ${b} = ${a + b}), majd gondold végig, mennyi hiányzik még ${a + b}-hoz, hogy 10 legyen!`,
     };
   }
   if (mod === 1) {
@@ -395,7 +400,7 @@ function generateTopic6(topicId: string, idx: number): Exercise {
     'db',
     total - eaten,
     `${total} - ${eaten} = ${total - eaten}`,
-    `Vond ki a megevett diókat: ${total} - ${eaten} = ${total - eaten}.`
+    `Vond ki az összes dióból a megevett diók számát: ${total} - ${eaten}!`
   );
 }
 
@@ -407,19 +412,22 @@ function generateTopic7(topicId: string, idx: number): Exercise {
       prompt: string;
       options: string[];
       correct: string;
+      explanation: string;
       hint: string;
     }> = [
       {
         prompt: 'Melyik alakzatot építhetjük meg 4 egyforma hosszúságú pálcikából?',
         options: ['Négyzet', 'Háromszög', 'Kör', 'Gömb'],
         correct: 'Négyzet',
-        hint: 'A négyzetnek 4 egyenlő oldala van, a háromszögnek csak 3.',
+        explanation: 'A négyzetnek 4 egyenlő oldala van, a háromszögnek csak 3.',
+        hint: 'Gondold végig, melyik síkidomnak van pontosan 4 egyforma oldala!',
       },
       {
         prompt: 'Melyik tárgy hasonlít leginkább egy GÖMBRE?',
         options: ['Focilabda', 'Dobókocka', 'Ceruza', 'Könyv'],
         correct: 'Focilabda',
-        hint: 'A focilabda gömb alakú, a dobókocka kocka, a könyv pedig téglatest.',
+        explanation: 'A focilabda gömb alakú, a dobókocka kocka, a könyv pedig téglatest.',
+        hint: 'Gondolj arra, melyik tárgy kerek minden irányból és gurul!',
       },
     ];
     const q = questions[Math.floor(idx / 4) % questions.length];
@@ -432,7 +440,7 @@ function generateTopic7(topicId: string, idx: number): Exercise {
       promptText: q.prompt,
       options: q.options,
       correctOption: q.correct,
-      explanation: q.hint,
+      explanation: q.explanation,
       hint: q.hint,
     };
     return ex;
@@ -450,7 +458,7 @@ function generateTopic7(topicId: string, idx: number): Exercise {
       'dm',
       red + yellow,
       `${red} + ${yellow} = ${red + yellow}`,
-      `Add össze a két szalag hosszát: ${red} + ${yellow} = ${red + yellow} dm.`
+      `Add össze a két szalag hosszát: ${red} + ${yellow}!`
     );
   }
 
@@ -468,7 +476,7 @@ function generateTopic7(topicId: string, idx: number): Exercise {
       'kg',
       total,
       `${bread} + ${flour} + ${potato} = ${total}`,
-      `Add össze a kilogrammokat: ${bread} + ${flour} + ${potato} = ${total} kg.`
+      `Add össze a háromféle élelmiszer tömegét: ${bread} + ${flour} + ${potato}!`
     );
   }
 
@@ -483,7 +491,7 @@ function generateTopic7(topicId: string, idx: number): Exercise {
     'dl',
     needed,
     `10 - ${poured} = ${needed}`,
-    `1 liter = 10 dl. Számold ki: 10 - ${poured} = ${needed} dl.`
+    `1 liter = 10 dl. Vond ki 10-ből a már beleöntött ${poured} decilitert!`
   );
 }
 
@@ -504,7 +512,7 @@ function generateTopic8(topicId: string, idx: number): Exercise {
       instruction: 'Melyik szám áll 1 tízesből és a megadott egyesekből?',
       expression: `1 t + ${e} e`,
       exactResult: 10 + e,
-      hint: `1 tízes = 10, ehhez jön ${e} egyes → ${10 + e}.`,
+      hint: `1 tízes az 10. Adj hozzá a 10-hez ${e} egyest!`,
     };
   }
   // Időmérés: egész órák (II. kötet 32. o.)
@@ -518,7 +526,7 @@ function generateTopic8(topicId: string, idx: number): Exercise {
     'óra',
     start + plus,
     `${start} + ${plus} = ${start + plus}`,
-    `Adj hozzá ${start}-hoz ${plus}-t: ${start} + ${plus} = ${start + plus} óra.`
+    `Add hozzá a kezdési időponthoz (${start} óra) a mese időtartamát (${plus} óra)!`
   );
 }
 
@@ -541,7 +549,7 @@ function generateTopic9(topicId: string, idx: number): Exercise {
     'db',
     a + b,
     `${a} + ${b} = ${a + b}`,
-    `Pótold ${a}-t 10-re, majd add hozzá a maradékot: ${a} + ${b} = ${a + b}.`
+    `Pótold először a(z) ${a}-t 10-re, majd add hozzá a maradékot (${a} + ${b})!`
   );
 }
 
@@ -564,7 +572,7 @@ function generateTopic10(topicId: string, idx: number): Exercise {
     'db',
     total - taken,
     `${total} - ${taken} = ${total - taken}`,
-    `Vond ki két lépésben: ${total} - ${taken} = ${total - taken}.`
+    `Vond ki a kosárban lévő ${total} szilvából a megevett ${taken} szemet (${total} - ${taken})!`
   );
 }
 
@@ -587,7 +595,7 @@ function generateTopic11(topicId: string, idx: number): Exercise {
     'db',
     a + b,
     `${a} + ${b} = ${a + b}`,
-    `Számold ki tízesátlépéssel: ${a} + ${b} = ${a + b}.`
+    `Add össze a két dobozban lévő kisautók számát tízesátlépéssel (${a} + ${b})!`
   );
 }
 
@@ -630,7 +638,7 @@ function generateTopic12(topicId: string, idx: number): Exercise {
     'db',
     total - given,
     `${total} - ${given} = ${total - given}`,
-    `Számold ki: ${total} - ${given} = ${total - given}.`
+    `Vond ki a ${total} üveggolyóból a kölcsönadott ${given} darabot (${total} - ${given})!`
   );
 }
 

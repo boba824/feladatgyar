@@ -80,7 +80,7 @@ export function generateWrittenArithmetic(
       estimatedB,
       estimatedResult,
       exactResult,
-      hint: `Százasra kerekítve: ${operandA} ≈ ${estimatedA}, ${operandB} ≈ ${estimatedB}. Így a becslés: ${estimatedA} + ${estimatedB} = ${estimatedResult}.`,
+      hint: `A becsléshez kerekítsd a két tagot százasra (${operandA} ≈ ${estimatedA}, ${operandB} ≈ ${estimatedB}), majd add össze a kerekített értékeket! A pontos összegnél jobbról balra (az egyesektől kezdve) adj össze!`,
     };
   }
 
@@ -107,7 +107,7 @@ export function generateWrittenArithmetic(
       estimatedB,
       estimatedResult,
       exactResult,
-      hint: `Százasra kerekítve: ${operandA} ≈ ${estimatedA}, ${operandB} ≈ ${estimatedB}. Így a becslés: ${estimatedA} - ${estimatedB} = ${estimatedResult}.`,
+      hint: `A becsléshez kerekítsd a két számot százasra (${operandA} ≈ ${estimatedA}, ${operandB} ≈ ${estimatedB}), majd vond ki őket egymásból! A pontos különbségnél jobbról balra haladj!`,
     };
   }
 
@@ -138,7 +138,7 @@ export function generateWrittenArithmetic(
     estimatedB,
     estimatedResult,
     exactResult,
-    hint: `${operandA} ≈ ${estimatedA}, így a becslés: ${estimatedA} · ${operandB} = ${estimatedResult}.`,
+    hint: `A becsléshez kerekítsd a szorzandót (${operandA} ≈ ${estimatedA}), és szorozd meg ${operandB}-vel! A pontos szorzatnál haladj az egyesektől a nagyobb helyi értékek felé!`,
   };
 }
 
@@ -173,11 +173,11 @@ export function generateTwoDigitMultiplication(topicId: string): WrittenArithmet
     estimatedB,
     estimatedResult,
     exactResult,
-    hint: `Tízesre kerekítve: ${operandA} ≈ ${estimatedA} és ${operandB} ≈ ${estimatedB}. Becslés: ${estimatedA} · ${estimatedB} = ${estimatedResult}. Részletszorzatok: ${operandA} · ${Math.floor(
+    hint: `Tízesre kerekítve: ${operandA} ≈ ${estimatedA} és ${operandB} ≈ ${estimatedB}. Részletszorzatok: ${operandA} · ${Math.floor(
       operandB / 10
-    )}0 = ${operandA * Math.floor(operandB / 10) * 10}, és ${operandA} · ${
+    )}0 = ${operandA * Math.floor(operandB / 10) * 10}, valamint ${operandA} · ${
       operandB % 10
-    } = ${operandA * (operandB % 10)}. Összesen: ${exactResult}.`,
+    } = ${operandA * (operandB % 10)}. Add össze a két részletszorzatot!`,
   };
 }
 
@@ -206,9 +206,7 @@ export function generateWrittenDivision(topicId: string): WrittenDivisionExercis
     quotient,
     remainder,
     hasRemainder,
-    hint: `Ellenőrzés szorzással: ${quotient} · ${divisor} = ${quotient * divisor}${
-      remainder > 0 ? `, + ${remainder} (maradék) = ${dividend}` : ` = ${dividend}`
-    }.`,
+    hint: `Haladj balról jobbra a legnagyobb helyi értéktől kezdve! Ellenőrizd a végén: (hányados · ${divisor}) + maradék = ${dividend}.`,
   };
 }
 
@@ -247,7 +245,7 @@ export function generateRoundingNeighbors(
       rounded,
       neighborType,
     },
-    hint: `A(z) ${num} a ${smallerNeighbor} és a ${largerNeighbor} között van. Mivel az utolsó végződés ${remainder}, a kerekített érték ${rounded}.`,
+    hint: `Keresd meg a(z) ${num} előtti és utáni legközelebbi kerek ${neighborType}t! Mivel a végződés ${remainder}, ${remainder >= divisor / 2 ? 'felfelé (a nagyobb szomszédra)' : 'lefelé (a kisebb szomszédra)'} kerekítünk.`,
   };
 }
 
@@ -285,7 +283,7 @@ export function generatePlaceValue(
         'Melyik számra gondoltam? Figyelj a helyi értékek sorrendjére és az átváltásokra is!',
       expression,
       exactResult,
-      hint: `${sz} százas = ${sz * 100}, ${t} tízes = ${t * 10}, ${e} egyes = ${e}. Összesen: ${exactResult}.`,
+      hint: `Váltsd át egyesekre és add össze őket: ${sz} százas = ${sz * 100}, ${t} tízes = ${t * 10}, ${e} egyes = ${e}!`,
     };
   }
 
@@ -319,7 +317,7 @@ export function generatePlaceValue(
       'Mennyi a szám valódi értéke? Vigyázz: a helyi értékek felcserélve is szerepelhetnek, vagy 10-nél több is lehet belőlük!',
     expression,
     exactResult,
-    hint: `${E} ezres (${E * 1000}) + ${sz} százas (${sz * 100}) + ${t} tízes (${t * 10}) + ${e} egyes (${e}) = ${exactResult}.`,
+    hint: `Add össze a helyi értékek valódi értékét: ${E} ezres (${E * 1000}) + ${sz} százas (${sz * 100}) + ${t} tízes (${t * 10}) + ${e} egyes (${e})!`,
   };
 }
 
@@ -343,7 +341,7 @@ export function generateUnitConversion(topicId: string): UnitConversionExercise 
         sourceText: `${km} km ${m} m`,
         targetUnit: 'm',
         exactResult: km * 1000 + m,
-        hint: `1 km = 1000 m, tehát ${km} km ${m} m = ${km * 1000} m + ${m} m = ${km * 1000 + m} m.`,
+        hint: `1 km = 1000 m, tehát a(z) ${km} km az ${km * 1000} m. Ehhez add hozzá a(z) ${m} m-t!`,
       };
     }
     case 1: {
@@ -358,7 +356,7 @@ export function generateUnitConversion(topicId: string): UnitConversionExercise 
         sourceText: `${dm} dm`,
         targetUnit: 'm',
         exactResult: dm / 10,
-        hint: `10 dm = 1 m, ezért ${dm} dm = ${dm / 10} m.`,
+        hint: `10 dm = 1 m, ezért oszd el a deciméterek számát (${dm}) 10-zel!`,
       };
     }
     case 2: {
@@ -373,7 +371,7 @@ export function generateUnitConversion(topicId: string): UnitConversionExercise 
         sourceText: `${cm} cm`,
         targetUnit: 'mm',
         exactResult: cm * 10,
-        hint: `1 cm = 10 mm, tehát ${cm} cm = ${cm * 10} mm.`,
+        hint: `1 cm = 10 mm, ezért szorozd meg a centiméterek számát (${cm}) 10-zel!`,
       };
     }
     case 3: {
@@ -389,7 +387,7 @@ export function generateUnitConversion(topicId: string): UnitConversionExercise 
         sourceText: `${kg} kg ${dkg} dkg`,
         targetUnit: 'dkg',
         exactResult: kg * 100 + dkg,
-        hint: `1 kg = 100 dkg, így ${kg} kg ${dkg} dkg = ${kg * 100 + dkg} dkg.`,
+        hint: `1 kg = 100 dkg, így a(z) ${kg} kg az ${kg * 100} dkg. Ehhez add hozzá a(z) ${dkg} dkg-ot!`,
       };
     }
     case 4: {
@@ -404,7 +402,7 @@ export function generateUnitConversion(topicId: string): UnitConversionExercise 
         sourceText: `${dkg} dkg`,
         targetUnit: 'g',
         exactResult: dkg * 10,
-        hint: `1 dkg = 10 g, tehát ${dkg} dkg = ${dkg * 10} g.`,
+        hint: `1 dkg = 10 g, ezért szorozd meg a dekagrammok számát (${dkg}) 10-zel!`,
       };
     }
     case 5: {
@@ -420,7 +418,7 @@ export function generateUnitConversion(topicId: string): UnitConversionExercise 
         sourceText: `${l} l ${dl} dl`,
         targetUnit: 'dl',
         exactResult: l * 10 + dl,
-        hint: `1 l = 10 dl, így ${l} l ${dl} dl = ${l * 10 + dl} dl.`,
+        hint: `1 l = 10 dl, így a(z) ${l} l az ${l * 10} dl. Ehhez add hozzá a(z) ${dl} dl-t!`,
       };
     }
     case 6: {
@@ -435,7 +433,7 @@ export function generateUnitConversion(topicId: string): UnitConversionExercise 
         sourceText: `${cl} cl`,
         targetUnit: 'ml',
         exactResult: cl * 10,
-        hint: `1 cl = 10 ml, így ${cl} cl = ${cl * 10} ml.`,
+        hint: `1 cl = 10 ml, ezért szorozd meg a centiliterek számát (${cl}) 10-zel!`,
       };
     }
     case 7: {
@@ -450,7 +448,7 @@ export function generateUnitConversion(topicId: string): UnitConversionExercise 
         sourceText: `Négyzet oldala: a = ${sideCm} cm`,
         targetUnit: 'cm (kerület)',
         exactResult: sideCm * 4,
-        hint: `A négyzet kerülete K = 4 · a = 4 · ${sideCm} cm = ${sideCm * 4} cm.`,
+        hint: `A négyzetnek 4 egyenlő oldala van (K = 4 · a), ezért szorozd meg a(z) ${sideCm} cm-t 4-gyel!`,
       };
     }
     case 8: {
@@ -469,7 +467,7 @@ export function generateUnitConversion(topicId: string): UnitConversionExercise 
         sourceText: `${rawKg} kg nyers hús (-1/5 rész)`,
         targetUnit: 'dkg sült hús',
         exactResult: roastedDkg,
-        hint: `${rawKg} kg = ${rawDkg} dkg. Az ötödrésze: ${rawDkg} : 5 = ${lostDkg} dkg veszteség. Marad: ${rawDkg} - ${lostDkg} = ${roastedDkg} dkg.`,
+        hint: `${rawKg} kg = ${rawDkg} dkg. Az ötödrésze: ${rawDkg} : 5 = ${lostDkg} dkg veszteség. Vond ki ezt a(z) ${rawDkg} dkg-ból!`,
       };
     }
     case 9: {
@@ -487,7 +485,7 @@ export function generateUnitConversion(topicId: string): UnitConversionExercise 
         sourceText: `${days} nap × ${dailyKg} kg/nap`,
         targetUnit: 'kg bambusz',
         exactResult: totalKg,
-        hint: `Szorozd meg a napi adagot (${dailyKg} kg) a napok számával (${days}): ${dailyKg} · ${days} = ${totalKg} kg.`,
+        hint: `Szorozd meg a napi adagot (${dailyKg} kg) a napok számával (${days})!`,
       };
     }
     default: {
@@ -503,7 +501,7 @@ export function generateUnitConversion(topicId: string): UnitConversionExercise 
         sourceText: `Oldalak: a = ${a} m, b = ${b} m`,
         targetUnit: 'm² (egység)',
         exactResult: a * b,
-        hint: `A téglalap területe: T = a · b = ${a} · ${b} = ${a * b}.`,
+        hint: `A téglalap területét a két szomszédos oldal szorzata adja (T = a · b): szorozd össze a(z) ${a}-t és a(z) ${b}-t!`,
       };
     }
   }
@@ -533,7 +531,7 @@ export function generateNegativeNumbers(topicId: string): NegativeNumbersExercis
       endTemp,
       unit: '°C-kal',
       exactResult: delta,
-      hint: `${startTemp} °C és ${endTemp} °C között a különbség ${delta} °C.`,
+      hint: `Nézd meg a hőmérő skáláján, mekkora a távolság ${startTemp} °C és ${endTemp} °C között (0 °C érintésével, ha különböző előjelűek)!`,
     };
   }
 
@@ -555,9 +553,7 @@ export function generateNegativeNumbers(topicId: string): NegativeNumbersExercis
       endTemp: evening,
       unit: '°C',
       exactResult: evening,
-      hint: `Délben: ${morning} + ${warmUp} = ${morning + warmUp} °C. Este: ${
-        morning + warmUp
-      } - ${coolDown} = ${evening} °C.`,
+      hint: `Először számold ki a déli hőmérsékletet (${morning} + ${warmUp} = ${morning + warmUp} °C), majd ebből lépj lefelé ${coolDown} fokot!`,
     };
   }
 
@@ -579,9 +575,9 @@ export function generateNegativeNumbers(topicId: string): NegativeNumbersExercis
       endTemp: maxHeat,
       unit: '°C',
       exactResult: maxHeat,
-      hint: `A ${minCold} °C-tól 0 °C-ig ${Math.abs(minCold)} °C van, így ${diffRange} - ${Math.abs(
+      hint: `A ${minCold} °C-tól 0 °C-ig ${Math.abs(minCold)} °C emelkedés szükséges. Vond ki a(z) ${diffRange}-ből a(z) ${Math.abs(
         minCold
-      )} = ${maxHeat} °C.`,
+      )}-t!`,
     };
   }
 
@@ -605,7 +601,7 @@ export function generateNegativeNumbers(topicId: string): NegativeNumbersExercis
       endTemp: saturdayNight,
       unit: '°C',
       exactResult: saturdayNight,
-      hint: `Péntek éjjel: ${thursdayNight} - ${fridayDrop} = ${fridayNight} °C. Szombat éjjel: ${fridayNight} + ${saturdayRise} = ${saturdayNight} °C.`,
+      hint: `Péntek éjjel: ${thursdayNight} - ${fridayDrop} = ${fridayNight} °C. Ehhez add hozzá a szombati ${saturdayRise} °C-os enyhülést!`,
     };
   }
 
@@ -623,7 +619,7 @@ export function generateNegativeNumbers(topicId: string): NegativeNumbersExercis
     questionText: `Mennyi pénzt kell még gyűjtenünk a ${savings} Ft-hoz, hogy a tartozást teljesen kifizessük (0 Ft-ra jussunk)?`,
     unit: 'Ft',
     exactResult: needed,
-    hint: `${debt} Ft - ${savings} Ft = ${needed} Ft-ot kell még összegyűjteni.`,
+    hint: `Vond ki a tartozás összegéből (${debt} Ft) a már meglévő megtakarítást (${savings} Ft)!`,
   };
 }
 
@@ -645,7 +641,7 @@ export function generateRomanNumerals(topicId: string): RomanNumeralsExercise {
       direction,
       promptValue: `${roman}.`,
       exactAnswer: String(num),
-      hint: `I = 1, V = 5, X = 10, L = 50. A(z) ${roman} értéke arab számmal: ${num}.`,
+      hint: `Emlékeztető: I = 1, V = 5, X = 10, L = 50 (IV = 4, IX = 9, XL = 40). Olvasd össze a tízesek és az egyesek értékét!`,
     };
   }
 
@@ -658,7 +654,7 @@ export function generateRomanNumerals(topicId: string): RomanNumeralsExercise {
     direction,
     promptValue: String(num),
     exactAnswer: roman,
-    hint: `I = 1, IV = 4, V = 5, IX = 9, X = 10, XL = 40, L = 50. A helyes válasz: ${roman}.`,
+    hint: `Emlékeztető: I = 1, IV = 4, V = 5, IX = 9, X = 10, XL = 40, L = 50. Bontsd a számot tízesekre és egyesekre!`,
   };
 }
 
@@ -707,7 +703,7 @@ export function generateFractionsExercise(topicId: string): Exercise {
       unit: 'év',
       exactResult: dreamYears,
       solutionSteps: `Alvás (harmada): ${years} : 3 = ${sleepYears} év. Álmodás (az alvás negyede): ${sleepYears} : 4 = ${dreamYears} év.`,
-      hint: `${years} év harmada ${sleepYears} év alvás. Ennek a negyede: ${sleepYears} : 4 = ${dreamYears} év.`,
+      hint: `${years} év harmada ${sleepYears} év alvás. Ennek a negyedét úgy kapod meg, ha elosztod a(z) ${sleepYears}-at 4-gyel!`,
     };
   }
 
@@ -756,11 +752,10 @@ export function generateFractionsExercise(topicId: string): Exercise {
     denominator: chosen.d,
     denominatorLabel,
     exactResult,
-    hint: `1 ${chosen.singular}: ${wholeValue} : ${chosen.d} = ${onePart} ${u.unit}. ${
+    hint:
       numerator > 1
-        ? `${numerator} ${chosen.singular}: ${onePart} · ${numerator} = ${exactResult} ${u.unit}.`
-        : `Így az eredmény: ${exactResult} ${u.unit}.`
-    }`,
+        ? `Először számítsd ki az 1 ${chosen.singular}t (${wholeValue} : ${chosen.d} = ${onePart}), majd szorozd meg ${numerator}-val!`
+        : `Az 1 ${chosen.singular}t úgy kapod meg, ha a teljes mennyiséget (${wholeValue}) elosztod ${chosen.d}-val!`,
   };
 }
 
@@ -786,7 +781,7 @@ export function generateGeometrySolidsExercise(topicId: string): WordProblemExer
         unit: 'cm',
         exactResult: totalEdges,
         solutionSteps: `12 · ${edgeCm} cm = ${totalEdges} cm`,
-        hint: `A kockának 12 egyforma éle van, ezért: 12 · ${edgeCm} = ${totalEdges} cm.`,
+        hint: `A kockának 12 egyforma éle van, ezért szorozd meg az egy él hosszát (${edgeCm} cm) 12-vel!`,
       };
     }
     case 1: {
@@ -826,9 +821,9 @@ export function generateGeometrySolidsExercise(topicId: string): WordProblemExer
         unit: 'cm',
         exactResult: sumEdges,
         solutionSteps: `4 · ${a} + 4 · ${b} + 4 · ${c} = ${4 * a} + ${4 * b} + ${4 * c} = ${sumEdges} cm`,
-        hint: `Minden élhosszúságból 4 darab van: 4 · (${a} + ${b} + ${c}) = 4 · ${
+        hint: `Minden élhosszúságból 4 darab van: add össze a három különböző élt (${a} + ${b} + ${c} = ${
           a + b + c
-        } = ${sumEdges} cm.`,
+        }), majd szorozd meg 4-gyel!`,
       };
     }
     case 3: {
@@ -899,9 +894,9 @@ export function generateGeometrySolidsExercise(topicId: string): WordProblemExer
         solutionSteps: `Új oldalak: ${origA * scale} cm és ${
           origB * scale
         } cm. Kerület: 2 · (${origA * scale} + ${origB * scale}) = ${newPerim} cm.`,
-        hint: `A nagyított oldalak ${origA * scale} cm és ${
+        hint: `A nagyított téglalap oldalai ${origA * scale} cm és ${
           origB * scale
-        } cm. Kerülete: 2 · (${origA * scale} + ${origB * scale}) = ${newPerim} cm.`,
+        } cm lesznek. Számítsd ki a kerületét: 2 · (${origA * scale} + ${origB * scale})!`,
       };
     }
   }
@@ -927,7 +922,7 @@ export function generateTimeMeasurementExercise(topicId: string): Exercise {
       sourceText: `${secs} másodperc`,
       targetUnit: 'perc',
       exactResult: mins,
-      hint: `1 perc = 60 másodperc, ezért ${secs} : 60 = ${mins} perc.`,
+      hint: `1 perc = 60 másodperc, ezért oszd el a(z) ${secs}-et 60-nal!`,
     };
   }
 
@@ -945,7 +940,7 @@ export function generateTimeMeasurementExercise(topicId: string): Exercise {
       sourceText: `${mins} perc`,
       targetUnit: 'másodperc',
       exactResult: secs,
-      hint: `1 perc = 60 másodperc, így ${mins} · 60 = ${secs} másodperc.`,
+      hint: `1 perc = 60 másodperc, ezért szorozd meg a(z) ${mins} percet 60-nal!`,
     };
   }
 
@@ -964,7 +959,7 @@ export function generateTimeMeasurementExercise(topicId: string): Exercise {
       sourceText: `${hours} óra ${extraMins} perc`,
       targetUnit: 'perc',
       exactResult: totalMins,
-      hint: `1 óra = 60 perc, tehát ${hours} · 60 + ${extraMins} = ${hours * 60} + ${extraMins} = ${totalMins} perc.`,
+      hint: `1 óra = 60 perc, tehát a(z) ${hours} óra az ${hours * 60} perc. Ehhez add hozzá a(z) ${extraMins} percet!`,
     };
   }
 
@@ -1055,7 +1050,7 @@ export function generateTimeMeasurementExercise(topicId: string): Exercise {
     sourceText: `${weeks} hét ${extraDays} nap`,
     targetUnit: 'nap',
     exactResult: totalDays,
-    hint: `1 hét = 7 nap, így ${weeks} · 7 + ${extraDays} = ${weeks * 7} + ${extraDays} = ${totalDays} nap.`,
+    hint: `1 hét = 7 nap, így a(z) ${weeks} hét az ${weeks * 7} nap. Ehhez add hozzá a(z) ${extraDays} napot!`,
   };
 }
 
@@ -1150,9 +1145,9 @@ export function generateFinancialExercise(topicId: string): WordProblemExercise 
         unit: 'játszma',
         exactResult: matches,
         solutionSteps: `${players} · ${players - 1} : 2 = ${matches} játszma`,
-        hint: `Mindenki ${players - 1} ellenféllel játszik, de minden meccset kétszer számolnánk: (${players} · ${
+        hint: `Mindenki ${players - 1} ellenféllel játszik (${players} · ${
           players - 1
-        }) : 2 = ${matches}.`,
+        }), de mivel minden párost kétszer számolnánk, a szorzatot oszd el 2-vel!`,
       };
     }
     case 4: {
@@ -1172,7 +1167,7 @@ export function generateFinancialExercise(topicId: string): WordProblemExercise 
         solutionSteps: `${flavors} · ${flavors - 1} : 2 = ${combinations}`,
         hint: `Az első gombóc ${flavors}-féle, a második ${
           flavors - 1
-        }-féle lehet, és mivel a sorrend nem számít, osztjuk 2-vel: ${combinations}.`,
+        }-féle lehet (${flavors} · ${flavors - 1}), és mivel a sorrend nem számít, a szorzatot oszd el 2-vel!`,
       };
     }
     case 5: {
@@ -1266,7 +1261,7 @@ export function generateWordProblem(
         unit: '',
         exactResult: res,
         solutionSteps: `${a} · ${b} - ${c} = ${a * b} - ${c} = ${res}`,
-        hint: `Először szorzunk: ${a} · ${b} = ${a * b}, majd kivonjuk a ${c}-t: ${res}.`,
+        hint: `Először a szorzást végezd el (${a} · ${b} = ${a * b}), majd ebből vond ki a(z) ${c}-t!`,
       };
     }
     if (subVariant === 1) {
